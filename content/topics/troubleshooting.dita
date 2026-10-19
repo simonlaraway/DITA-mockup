@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE troubleshooting PUBLIC "-//OASIS//DTD DITA Troubleshooting//EN" "troubleshooting.dtd">
+<troubleshooting id="troubleshooting">
+  <title>Troubleshooting</title>
+  <shortdesc>Fix common problems with <ph keyref="product-name"/>.</shortdesc>
+  <troublebody>
+    <condition><p>The widget does not start, or the status light blinks red.</p></condition>
+    <troubleSolution>
+      <cause><p>A hardware fault or a corrupted configuration.</p></cause>
+      <remedy>
+        <steps>
+          <step conkeyref="reuse/step-restart"><cmd/></step>
+          <step><cmd>Check the cable connections.</cmd>
+            <info><note conref="../shared/reuse.dita#reuse/warn-power"/></info></step>
+          <step audience="admin"><cmd>Review the audit log for recent configuration changes.</cmd></step>
+        </steps>
+      </remedy>
+    </troubleSolution>
+    <troubleSolution>
+      <cause><p>The problem is not listed here.</p></cause>
+      <remedy>
+        <steps-informal><p conref="../shared/reuse.dita#reuse/contact-support"/></steps-informal>
+      </remedy>
+    </troubleSolution>
+  </troublebody>
+</troubleshooting>

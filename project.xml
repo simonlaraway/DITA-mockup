@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DITA-OT project file: the same source map, published twice with different
+     DITAVAL profiles, through one shared HTML5 publication definition. -->
+<project xmlns="https://www.dita-ot.org/project">
+
+  <!-- Contexts = input + filter profile -->
+  <context id="guide-user" name="Acme Widget Guide (end users)">
+    <input href="content/widget-guide.ditamap"/>
+    <profile><ditaval href="content/filters/user.ditaval"/></profile>
+  </context>
+  <context id="guide-admin" name="Acme Widget Guide (administrators)">
+    <input href="content/widget-guide.ditamap"/>
+    <profile><ditaval href="content/filters/admin.ditaval"/></profile>
+  </context>
+
+  <!-- Publication = transtype + parameters, shared by both deliverables -->
+  <publication id="html-base" transtype="html5">
+    <param name="args.css" path="theme/custom.css"/>
+    <param name="args.copycss" value="yes"/>
+    <param name="args.csspath" value="css"/>
+    <param name="nav-toc" value="full"/>
+    <param name="args.gen.task.lbl" value="YES"/>
+  </publication>
+
+  <deliverable id="user">
+    <context idref="guide-user"/>
+    <output href="user"/>
+    <publication idref="html-base"/>
+  </deliverable>
+
+  <deliverable id="admin">
+    <context idref="guide-admin"/>
+    <output href="admin"/>
+    <publication idref="html-base"/>
+  </deliverable>
+</project>

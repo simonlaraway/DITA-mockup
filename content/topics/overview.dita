@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="overview">
+  <title>About <ph keyref="product-name"/></title>
+  <shortdesc><ph keyref="product-name"/> <ph keyref="product-version"/> is a configurable
+    widget appliance from <ph keyref="company"/>.</shortdesc>
+  <conbody>
+    <p>This guide explains how to install, configure, and troubleshoot
+      <ph keyref="product-name"/>.</p>
+    <p audience="admin">Administrators also manage fleet-wide settings, licensing, and audit
+      logging. Those topics are marked as administrator content.</p>
+    <section>
+      <title>What's in this guide</title>
+      <ul>
+        <li><xref keyref="install"/></li>
+        <li><xref keyref="configure"/></li>
+        <li><xref keyref="troubleshooting"/></li>
+      </ul>
+    </section>
+  </conbody>
+</concept>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<!-- Key definitions: variables and indirect topic addresses. -->
+<map>
+  <title>Key definitions</title>
+
+  <!-- Text variables -->
+  <keydef keys="product-name">
+    <topicmeta><keywords><keyword>Acme Widget</keyword></keywords></topicmeta>
+  </keydef>
+  <keydef keys="product-version">
+    <topicmeta><keywords><keyword>3.2</keyword></keywords></topicmeta>
+  </keydef>
+  <keydef keys="company">
+    <topicmeta><keywords><keyword>Acme Corporation</keyword></keywords></topicmeta>
+  </keydef>
+  <keydef keys="support-url" href="https://support.example.com/widget" scope="external" format="html">
+    <topicmeta><linktext>Acme Support Portal</linktext></topicmeta>
+  </keydef>
+
+  <!-- Reuse warehouse, addressed by key for conkeyref -->
+  <keydef keys="reuse" href="shared/reuse.dita" processing-role="resource-only"/>
+
+  <!-- Topic keys: the root map points at these instead of file paths -->
+  <keydef keys="overview" href="topics/overview.dita"/>
+  <keydef keys="install" href="topics/install.dita"/>
+  <keydef keys="configure" href="topics/configure.dita"/>
+  <keydef keys="settings" href="topics/settings.dita"/>
+  <keydef keys="troubleshooting" href="topics/troubleshooting.dita"/>
+</map>

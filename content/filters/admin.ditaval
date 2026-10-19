@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Admin deliverable: keep everything, but flag administrator-only content. -->
+<val>
+  <prop att="audience" val="admin" action="flag" backcolor="#fff4d6" add-outputclass="admin-only">
+    <startflag><alt-text>[Admin]</alt-text></startflag>
+  </prop>
+</val>

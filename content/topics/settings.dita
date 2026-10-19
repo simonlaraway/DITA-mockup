@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="settings">
+  <title>Settings reference</title>
+  <shortdesc>All configuration properties for <ph keyref="product-name"/>
+    <ph keyref="product-version"/>.</shortdesc>
+  <refbody>
+    <properties>
+      <prophead><proptypehd>Setting</proptypehd><propvaluehd>Default</propvaluehd><propdeschd>Description</propdeschd></prophead>
+      <property><proptype><codeph>theme</codeph></proptype><propvalue>system</propvalue><propdesc>Light, dark, or follow the OS.</propdesc></property>
+      <property><proptype><codeph>notify.level</codeph></proptype><propvalue>normal</propvalue><propdesc>How often to show notifications.</propdesc></property>
+      <property platform="windows"><proptype><codeph>tray.icon</codeph></proptype><propvalue>on</propvalue><propdesc>Show the system tray icon (Windows only).</propdesc></property>
+      <property audience="admin"><proptype><codeph>audit.enabled</codeph></proptype><propvalue>false</propvalue><propdesc>Record every configuration change to the audit log.</propdesc></property>
+      <property audience="admin"><proptype><codeph>license.key</codeph></proptype><propvalue>(none)</propvalue><propdesc>Fleet license key used during registration.</propdesc></property>
+    </properties>
+  </refbody>
+</reference>

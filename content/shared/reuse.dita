@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<!-- Warehouse topic: never published on its own, only referenced via conref/conkeyref.
+     It's a task so it can hold reusable <step> elements. -->
+<task id="reuse">
+  <title>Reusable content</title>
+  <taskbody>
+    <prereq>
+      <note id="warn-power" type="warning">Disconnect the <ph keyref="product-name"/> from power
+        before you open the housing.</note>
+      <note id="note-backup" type="tip">Export your configuration before you upgrade so you can
+        roll back if needed.</note>
+      <p id="contact-support">If the problem persists, contact <xref keyref="support-url"/>.</p>
+    </prereq>
+    <steps>
+      <step id="step-restart">
+        <cmd>Restart the <ph keyref="product-name"/> service.</cmd>
+      </step>
+    </steps>
+  </taskbody>
+</task>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="configure">
+  <title>Configuring <ph keyref="product-name"/></title>
+  <shortdesc>Adjust preferences to suit your workflow.</shortdesc>
+  <taskbody>
+    <prereq><note conkeyref="reuse/note-backup"/></prereq>
+    <steps>
+      <step><cmd>Open <menucascade><uicontrol>Settings</uicontrol><uicontrol>General</uicontrol></menucascade>.</cmd></step>
+      <step><cmd>Choose a theme and notification level.</cmd></step>
+      <step audience="admin"><cmd>Enable audit logging under
+          <menucascade><uicontrol>Settings</uicontrol><uicontrol>Security</uicontrol></menucascade>.</cmd></step>
+      <step audience="admin"><cmd>Push the configuration to all enrolled devices.</cmd></step>
+      <step><cmd>Click <uicontrol>Save</uicontrol>.</cmd></step>
+    </steps>
+    <postreq><p>For a full list of options, see <xref keyref="settings"/>.</p></postreq>
+  </taskbody>
+</task>
