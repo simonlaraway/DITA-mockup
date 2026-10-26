@@ -37,4 +37,6 @@ if grep -qE '\[DOT[A-Z]+[0-9]+[EF]\]' out/build.log; then
   echo "==> FAILED: errors in out/build.log" >&2
   exit 1
 fi
+# Landing page linking the deliverables (served at the site root on GitHub Pages).
+cp "$ROOT/theme/index.html" "$ROOT/out/index.html"
 echo "==> Done. Output in $ROOT/out/"
