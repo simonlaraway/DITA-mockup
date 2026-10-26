@@ -40,4 +40,6 @@ if grep -qE '\[DOT[A-Z]+[0-9]+[EF]\]' out/build.log; then
 fi
 # Landing page linking the deliverables (served at the site root on GitHub Pages).
 cp "$ROOT/theme/index.html" "$ROOT/out/index.html"
+# Serve files as-is on GitHub Pages (no Jekyll processing).
+touch "$ROOT/out/.nojekyll"
 echo "==> Done. Output in $ROOT/out/"

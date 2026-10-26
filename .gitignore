@@ -1,2 +1,5 @@
 tools/
 out/
+staged/
+.venv/
+__pycache__/
