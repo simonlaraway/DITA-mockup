@@ -1,0 +1,51 @@
+name: Publish to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:          # build only, to catch DITA errors before merge
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      # DITA-OT is ~50 MB; cache it, keyed on build.sh (which pins the version).
+      - uses: actions/cache@v6
+        with:
+          path: tools
+          key: dita-ot-${{ hashFiles('build.sh') }}
+
+      - name: Build all deliverables
+        run: ./build.sh
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: out
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

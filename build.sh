@@ -12,6 +12,7 @@ DITA="$DITA_HOME/bin/dita"
 # Stage 0: make sure the toolkit is available.
 if [[ ! -x "$DITA" ]]; then
   echo "==> Downloading DITA-OT $DITA_OT_VERSION"
+  mkdir -p "$ROOT/tools"
   zip="$ROOT/tools/dita-ot-$DITA_OT_VERSION.zip"
   curl -fL -o "$zip" \
     "https://github.com/dita-ot/dita-ot/releases/download/$DITA_OT_VERSION/dita-ot-$DITA_OT_VERSION.zip"
@@ -37,4 +38,6 @@ if grep -qE '\[DOT[A-Z]+[0-9]+[EF]\]' out/build.log; then
   echo "==> FAILED: errors in out/build.log" >&2
   exit 1
 fi
+# Landing page linking the deliverables (served at the site root on GitHub Pages).
+cp "$ROOT/theme/index.html" "$ROOT/out/index.html"
 echo "==> Done. Output in $ROOT/out/"

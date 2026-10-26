@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Acme Widget Documentation</title>
+  <link rel="stylesheet" href="user/css/custom.css">
+  <style>
+    body { display: block; }
+    main { margin: 0 auto; padding: 3rem 1.5rem; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .card { display: block; border: 1px solid var(--line); border-radius: 8px; padding: 1.25rem;
+            color: var(--ink); text-decoration: none; background: var(--panel); }
+    .card:hover { border-color: var(--accent); }
+    .card h2 { margin: 0 0 .4rem; font-size: 1.2rem; color: var(--accent); }
+    .card p { margin: 0; color: var(--muted); }
+    footer { margin-top: 3rem; color: var(--muted); font-size: .85rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Acme Widget Documentation</h1>
+    <p class="shortdesc">One DITA source, published as two guides with DITAVAL filtering.</p>
+    <div class="cards">
+      <a class="card" href="user/index.html">
+        <h2>User Guide</h2>
+        <p>Installing, configuring, and troubleshooting. Administrator content removed.</p>
+      </a>
+      <a class="card" href="admin/index.html">
+        <h2>Administrator Guide</h2>
+        <p>Everything in the user guide, plus administrator content (highlighted).</p>
+      </a>
+    </div>
+    <footer>Built with DITA Open Toolkit.</footer>
+  </main>
+</body>
+</html>

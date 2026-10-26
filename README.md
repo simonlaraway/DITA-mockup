@@ -59,3 +59,16 @@ To publish a Windows-only user guide, for example:
 
 Other output formats are just another `<publication transtype="…">` (for example `pdf`,
 `markdown`, `xhtml`).
+
+## Publishing (GitHub Pages)
+
+`.github/workflows/publish.yml` runs `./build.sh` on GitHub Actions:
+
+- **Push to `main`** builds both guides and deploys `out/` to
+  <https://simonlaraway.github.io/DITA-mockup/>. The landing page (`theme/index.html`) links to
+  `user/` and `admin/`.
+- **Pull requests** only build. A DITA error fails the check, so broken content can't be merged
+  without anyone noticing.
+- **Manual run:** Actions → *Publish to GitHub Pages* → *Run workflow*.
+
+DITA-OT is cached between runs. Changing `DITA_OT_VERSION` in `build.sh` invalidates the cache.
