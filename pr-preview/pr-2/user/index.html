@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-us">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="copyright" content="(C) Copyright 2026">
+      <meta name="generator" content="DITA-OT">
+      <title>Acme Widget Guide</title>
+      <link rel="stylesheet" type="text/css" href="css/commonltr.css">
+      <link rel="stylesheet" type="text/css" href="css/custom.css">
+   <style>/* Staging preview: change highlighting. Inlined into every staged page by scripts/stage_diff.py. */
+:root {
+  --diff-add: #1a7f37;  --diff-add-bg: #e6ffec;  --diff-ins-bg: #abf2bc;
+  --diff-chg: #0969da;  --diff-chg-bg: #ddf4ff;
+  --diff-del: #cf222e;  --diff-del-bg: #ffebe9;  --diff-delw-bg: #ffcecb;
+}
+
+/* Banner */
+.staging-banner {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1rem;
+  grid-column: 1 / -1; margin: 0 0 1rem; padding: .6rem 1rem;
+  background: #1f2430; color: #fff; font-size: .9rem;
+}
+main > .staging-banner { margin: -2rem -3rem 1.5rem; padding: .6rem 3rem; }
+.staging-banner a { color: #9ec1ff; }
+.staging-tag { background: #ffb020; color: #1f2430; font-weight: 700; padding: .1rem .5rem; border-radius: 3px; }
+.staging-links { margin-left: auto; }
+.staging-banner button {
+  background: #3a4252; color: #fff; border: 0; border-radius: 3px; padding: .15rem .55rem; cursor: pointer;
+}
+.staging-banner button:hover { background: #4d5770; }
+
+/* Blocks. Backgrounds are !important so they win over DITAVAL flag colors (inline styles);
+   the [Admin] label still shows which items are admin-only. */
+.diff-added, .diff-changed, .diff-removed { border-radius: 3px; padding-left: .5rem; scroll-margin-top: 4rem; }
+.diff-added   { background: var(--diff-add-bg) !important; box-shadow: inset 4px 0 0 var(--diff-add); }
+.diff-changed { background: var(--diff-chg-bg) !important; box-shadow: inset 4px 0 0 var(--diff-chg); }
+.diff-removed { background: var(--diff-del-bg) !important; box-shadow: inset 4px 0 0 var(--diff-del);
+                text-decoration: line-through; text-decoration-color: var(--diff-del); opacity: .85; }
+tr.diff-added > *   { background: var(--diff-add-bg); }
+tr.diff-changed > * { background: var(--diff-chg-bg); }
+tr.diff-removed > * { background: var(--diff-del-bg); text-decoration: line-through; }
+.diff-current { outline: 2px solid #2f5bd3; outline-offset: 2px; }
+
+/* Words inside a changed block */
+.diff-changed ins { background: var(--diff-ins-bg); text-decoration: none; border-radius: 2px; }
+.diff-changed del { background: var(--diff-delw-bg); color: #82071e; border-radius: 2px; }
+
+/* Whole pages */
+.diff-page-added   { box-shadow: inset 4px 0 0 var(--diff-add); }
+.diff-page-removed { box-shadow: inset 4px 0 0 var(--diff-del); }
+.diff-page-removed article { text-decoration: line-through; text-decoration-color: var(--diff-del); opacity: .8; }
+
+/* TOC markers */
+li.diff-toc-changed > a::after { content: " \25CF"; color: var(--diff-chg); }
+li.diff-toc-added > a::after {
+  content: "new"; margin-left: .4rem; padding: 0 .35rem; border-radius: 3px;
+  font-size: .7rem; font-weight: 700; color: #fff; background: var(--diff-add); vertical-align: middle;
+}
+
+/* Summary page (changes.html) */
+body.staging-summary { display: block; }
+body.staging-summary main { margin: 0 auto; }
+.summary-added td:nth-child(2)   { color: var(--diff-add); font-weight: 600; }
+.summary-changed td:nth-child(2) { color: var(--diff-chg); font-weight: 600; }
+.summary-removed td:nth-child(2) { color: var(--diff-del); font-weight: 600; }
+
+@media (max-width: 760px) {
+  main > .staging-banner { margin: -1.5rem -1rem 1rem; padding: .6rem 1rem; }
+}
+</style></head>
+   <body>
+      <div class="staging-banner" role="note"><span class="staging-tag">Staging · PR #2</span><span>No changes on this page</span><span class="staging-links"><a href="../changes.html">All changes</a> · <a href="https://simonlaraway.github.io/DITA-mockup/user/index.html">Production page</a></span></div><h1 class="title topictitle1"><span class="ph">Acme Widget</span> Guide</h1>
+      <nav>
+         <ul lang="en-US" class="map">
+            <li class="topicref"><a href="topics/overview.html">About Acme Widget</a><ul>
+                  <li class="topicref"><a href="topics/install.html">Installing Acme Widget</a></li>
+                  <li class="topicref"><a href="topics/configure.html">Configuring Acme Widget</a><ul>
+                        <li class="topicref"><a href="topics/settings.html">Settings reference</a></li>
+                     </ul>
+                  </li>
+               </ul>
+            </li>
+            <li class="topicref"><a href="topics/troubleshooting.html">Troubleshooting</a></li>
+         </ul>
+      </nav>
+   <script>
+(function () {
+  var marks = document.querySelectorAll('.diff-anchor'), cur = -1;
+  function go(step) {
+    if (!marks.length) return;
+    cur = (cur + step + marks.length) % marks.length;
+    var el = marks[cur].parentElement;
+    el.scrollIntoView({behavior: 'smooth', block: 'center'});
+    document.querySelectorAll('.diff-current').forEach(function (e) { e.classList.remove('diff-current'); });
+    el.classList.add('diff-current');
+  }
+  document.querySelectorAll('[data-diff-step]').forEach(function (b) {
+    b.addEventListener('click', function () { go(+b.getAttribute('data-diff-step')); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.target.closest && e.target.closest('input,textarea')) return;
+    if (e.key === 'n') go(1); else if (e.key === 'p') go(-1);
+  });
+})();
+</script></body>
+</html>
