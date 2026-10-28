@@ -172,8 +172,12 @@ def word_diff(head_block, base_block):
                 pieces.append(("plain", s[pos:off]))
                 pos = off
             if kind == "del":
+                # Keep removed words readable: space them off from adjacent words,
+                # but don't push a following comma/period away.
+                if pos > 0 and not s[pos - 1].isspace() and payload[:1].isalnum():
+                    pieces.append(("plain", " "))
                 pieces.append(("del", payload))
-                if pos < len(s) and not s[pos].isspace():
+                if pos < len(s) and s[pos].isalnum():
                     pieces.append(("plain", " "))
             else:
                 pieces.append(("ins", s[off:payload]))
