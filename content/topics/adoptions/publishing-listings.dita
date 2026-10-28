@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="publishing-listings">
+  <title>Publishing adoptable animals to your website</title>
+  <shortdesc>Show your available animals on your own website, and let adopters apply online.</shortdesc>
+  <taskbody>
+    <context><p><ph keyref="product-name"/> hosts a listing page for your shelter
+        automatically. You can link to it, embed it in your website, or build your own page with
+        the <xref keyref="api-guide"/>.</p></context>
+    <steps>
+      <step audience="admin"><cmd>Open <menucascade><uicontrol>Settings</uicontrol><uicontrol>Public
+            listings</uicontrol></menucascade> and turn on <uicontrol>Publish listings</uicontrol>.</cmd>
+        <info><note conkeyref="reuse/note-admin-only"/></info></step>
+      <step audience="admin"><cmd>Choose which species and statuses to publish, and upload your
+          shelter's logo.</cmd></step>
+      <step><cmd>Click <uicontrol>Get embed code</uicontrol> and copy the snippet.</cmd></step>
+      <step><cmd>Paste the snippet into your website where the listings should appear.</cmd>
+        <stepxmp><codeblock>&lt;div id="corgibase-listings" data-shelter="your-shelter"&gt;&lt;/div&gt;
+&lt;script src="https://embed.corgibase.example/listings.js" async&gt;&lt;/script&gt;</codeblock></stepxmp></step>
+    </steps>
+    <result><p>Your listings update automatically when an animal's status, photos or description
+        change.</p></result>
+  </taskbody>
+</task>

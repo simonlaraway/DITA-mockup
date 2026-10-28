@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="exporting-reports">
+  <title>Exporting reports</title>
+  <shortdesc>Download intake, outcome and medical data for board reports, grant applications and
+    industry reporting such as Shelter Animals Count.</shortdesc>
+  <taskbody>
+    <prereq><note conkeyref="reuse/note-admin-only"/></prereq>
+    <steps>
+      <step><cmd>Click <uicontrol>Reports</uicontrol>.</cmd></step>
+      <step><cmd>Choose a report.</cmd>
+        <choicetable>
+          <chhead><choptionhd>Report</choptionhd><chdeschd>Contains</chdeschd></chhead>
+          <chrow><choption>Intake and outcome</choption><chdesc>Counts by species, type and
+              outcome. Matches the Shelter Animals Count format.</chdesc></chrow>
+          <chrow><choption>Length of stay</choption><chdesc>Average and median days from
+              intake to outcome.</chdesc></chrow>
+          <chrow><choption>Medical activity</choption><chdesc>Vaccinations, treatments and
+              surgeries by date.</chdesc></chrow>
+          <chrow><choption>Volunteer hours</choption><chdesc>Hours by volunteer and shift
+              type.</chdesc></chrow>
+        </choicetable></step>
+      <step><cmd>Set the date range and, if you have several sites, the site.</cmd></step>
+      <step><cmd>Click <uicontrol>Export</uicontrol> and choose CSV or PDF.</cmd></step>
+    </steps>
+    <result><p>Small reports download immediately. Larger ones are emailed to you as a link
+        that expires after 7 days.</p></result>
+    <postreq><note conkeyref="reuse/note-pii"/></postreq>
+  </taskbody>
+</task>

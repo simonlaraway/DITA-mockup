@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="volunteer-shifts">
+  <title>Scheduling volunteer shifts</title>
+  <shortdesc>Publish shifts that volunteers can sign up for, and track their hours.</shortdesc>
+  <taskbody>
+    <steps>
+      <step><cmd>Click <menucascade><uicontrol>Volunteers</uicontrol><uicontrol>Shifts</uicontrol></menucascade>.</cmd></step>
+      <step><cmd>Click <uicontrol>New shift</uicontrol> and enter the date, time and number of
+          volunteers needed.</cmd></step>
+      <step><cmd>Choose a shift type, such as <uicontrol>Dog walking</uicontrol>,
+          <uicontrol>Kennel cleaning</uicontrol> or <uicontrol>Adoption event</uicontrol>.</cmd>
+        <info><p>Shift types can require training. Volunteers only see shifts they're trained
+            for.</p></info></step>
+      <step><cmd>Optional: select <uicontrol>Repeat weekly</uicontrol>.</cmd></step>
+      <step><cmd>Click <uicontrol>Publish</uicontrol>.</cmd></step>
+    </steps>
+    <result><p>Trained volunteers get a notification and can sign up in the
+        <ph keyref="mobile-app"/> app. Volunteers check in and out with the app, and their hours
+        are recorded automatically.</p></result>
+  </taskbody>
+</task>

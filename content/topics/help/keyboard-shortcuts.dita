@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="keyboard-shortcuts">
+  <title>Keyboard shortcuts</title>
+  <shortdesc>Shortcuts for the <ph keyref="product-name"/> web app. Press
+    <userinput>?</userinput> anywhere to show them.</shortdesc>
+  <refbody>
+    <simpletable relcolwidth="1* 3*">
+      <sthead><stentry>Keys</stentry><stentry>Action</stentry></sthead>
+      <strow><stentry><userinput>/</userinput></stentry><stentry>Search animals, people and kennels</stentry></strow>
+      <strow><stentry><userinput>g</userinput> then <userinput>t</userinput></stentry><stentry>Go to the Today dashboard</stentry></strow>
+      <strow><stentry><userinput>g</userinput> then <userinput>a</userinput></stentry><stentry>Go to Animals</stentry></strow>
+      <strow><stentry><userinput>g</userinput> then <userinput>d</userinput></stentry><stentry>Go to Adoptions</stentry></strow>
+      <strow><stentry><userinput>n</userinput></stentry><stentry>New intake</stentry></strow>
+      <strow><stentry><userinput>m</userinput></stentry><stentry>Move the open animal to a kennel</stentry></strow>
+      <strow><stentry><userinput>Esc</userinput></stentry><stentry>Close a dialog or panel</stentry></strow>
+    </simpletable>
+  </refbody>
+</reference>

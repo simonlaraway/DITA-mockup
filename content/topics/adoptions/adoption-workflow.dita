@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="adoption-workflow">
+  <title>How adoptions work</title>
+  <shortdesc>Adoptions in <ph keyref="product-name"/> move through four stages, from
+    application to going home. Each stage is recorded on both the animal's and the adopter's
+    timeline.</shortdesc>
+  <conbody>
+    <ol>
+      <li><b>Apply.</b> An adopter applies through your website's listing or at the front desk.
+        Applications appear under <uicontrol>Adoptions</uicontrol> with status
+        <uicontrol>New</uicontrol>.</li>
+      <li><b>Review.</b> Staff check references and landlord approval, and can request a
+        meet-and-greet. Teammates can comment on the application.</li>
+      <li><b>Approve.</b> An approved application puts the animal on <uicontrol>Adoption
+        pending</uicontrol>, and other applications for that animal are waitlisted.</li>
+      <li><b>Finalize.</b> The adopter signs the contract on a tablet or by email, pays the fee,
+        and the animal's status changes to <uicontrol>Adopted</uicontrol>.</li>
+    </ol>
+    <note conkeyref="reuse/note-pii"/>
+    <section>
+      <title>Fosters</title>
+      <p>Foster placements use the same workflow, with a foster agreement in place of an adoption
+        contract. A foster animal stays available for adoption unless you turn off
+        <uicontrol>List while in foster</uicontrol>.</p>
+    </section>
+  </conbody>
+</concept>

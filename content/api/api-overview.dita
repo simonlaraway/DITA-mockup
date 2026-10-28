@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="api-overview">
+  <title>About the <ph keyref="product-name"/> API</title>
+  <shortdesc>The <ph keyref="product-name"/> REST API lets you read and update your shelter's
+    data from your own code: sync adoptable animals to your website, feed a dashboard, or
+    connect a partner system.</shortdesc>
+  <conbody>
+    <p>The API is organized around resources such as animals, kennels, intakes and adoptions. It
+      accepts and returns JSON, uses standard HTTP methods and status codes, and authenticates
+      with API keys.</p>
+    <section>
+      <title>Base URL and versioning</title>
+      <p>All requests go to:</p>
+      <codeblock><ph keyref="api-base-url"/></codeblock>
+      <p>The version (<ph keyref="api-version"/>) is part of the path. We add fields and endpoints
+        to a version without notice, so your code should ignore fields it doesn't recognize.
+        Breaking changes only ship in a new version, and old versions are supported for at least
+        12 months after a new one is released.</p>
+    </section>
+    <section>
+      <title>Live and sandbox data</title>
+      <p>Keys starting with <codeph>cb_live_</codeph> act on your real shelter. Keys starting with
+        <codeph>cb_test_</codeph> act on a sandbox shelter with sample animals that you can
+        change freely.</p>
+      <note conkeyref="reuse/note-sandbox"/>
+    </section>
+    <section>
+      <title>Plan requirements</title>
+      <p>The Rescue plan includes read-only API access. Shelter and Network plans include full
+        read and write access.</p>
+    </section>
+  </conbody>
+</concept>

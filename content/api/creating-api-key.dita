@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="creating-api-key">
+  <title>Creating an API key</title>
+  <shortdesc>Create a key to authenticate your API requests. Each key is limited to the scopes
+    you choose.</shortdesc>
+  <taskbody>
+    <prereq>
+      <note conkeyref="reuse/note-admin-only"/>
+      <note conkeyref="reuse/warn-api-key"/>
+    </prereq>
+    <steps>
+      <step><cmd>In <ph keyref="product-name"/>, open
+          <menucascade><uicontrol>Settings</uicontrol><uicontrol>API keys</uicontrol></menucascade>.</cmd></step>
+      <step><cmd>Click <uicontrol>Create key</uicontrol> and give it a name that says where it's
+          used, such as "Website listings".</cmd></step>
+      <step><cmd>Choose <uicontrol>Live</uicontrol> or <uicontrol>Sandbox</uicontrol>.</cmd></step>
+      <step><cmd>Select only the scopes the integration needs.</cmd>
+        <info>
+          <simpletable relcolwidth="1* 2*">
+            <sthead><stentry>Scope</stentry><stentry>Allows</stentry></sthead>
+            <strow><stentry><codeph>animals:read</codeph></stentry><stentry>List and read animals, photos and statuses</stentry></strow>
+            <strow><stentry><codeph>animals:write</codeph></stentry><stentry>Create intakes and update animal profiles</stentry></strow>
+            <strow><stentry><codeph>adoptions:read</codeph></stentry><stentry>Read applications and adoptions (includes personal data)</stentry></strow>
+            <strow><stentry><codeph>adoptions:write</codeph></stentry><stentry>Submit applications from your own forms</stentry></strow>
+            <strow><stentry><codeph>webhooks:manage</codeph></stentry><stentry>Create and delete webhook subscriptions</stentry></strow>
+          </simpletable>
+        </info></step>
+      <step><cmd>Click <uicontrol>Create</uicontrol> and copy the key.</cmd>
+        <stepresult><p>The full key is shown only once. If you lose it, delete the key and create
+            a new one.</p></stepresult></step>
+    </steps>
+    <result><p>Send the key as a bearer token in the <codeph>Authorization</codeph> header of
+        every request:</p>
+      <codeblock>Authorization: Bearer cb_live_8f3k2Q...</codeblock></result>
+  </taskbody>
+</task>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="signing-in">
+  <title>Signing in for the first time</title>
+  <shortdesc>Accept your invitation, set a password, and turn on two-step verification.</shortdesc>
+  <taskbody>
+    <prereq><p>An administrator at your shelter must invite you first. Look for an email from
+        <ph keyref="product-name"/> with the subject "You're invited to join your shelter".</p></prereq>
+    <steps>
+      <step><cmd>Open the invitation email and click <uicontrol>Accept invitation</uicontrol>.</cmd>
+        <info><p>Invitations expire after 7 days. If yours has expired, ask your administrator to
+            resend it.</p></info></step>
+      <step><cmd>Enter your name and choose a password of at least 12 characters.</cmd></step>
+      <step><cmd>Set up two-step verification.</cmd>
+        <choices>
+          <choice>Scan the QR code with an authenticator app, then enter the 6-digit code.</choice>
+          <choice>Or register a security key or passkey.</choice>
+        </choices>
+        <stepresult><p>You see 10 backup codes. Store them somewhere safe; each one works once
+            if you lose your device.</p></stepresult></step>
+      <step><cmd>Click <uicontrol>Finish</uicontrol>.</cmd></step>
+    </steps>
+    <result><p>The <wintitle>Today</wintitle> dashboard opens. It shows the animals, tasks and
+        shifts that need your attention.</p></result>
+    <postreq><p>Install the <ph keyref="mobile-app"/> app on your phone and sign in with the
+        same account to work from the kennel floor.</p></postreq>
+  </taskbody>
+</task>

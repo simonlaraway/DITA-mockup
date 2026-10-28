@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="processing-application">
+  <title>Processing an adoption application</title>
+  <shortdesc>Review an application, approve or decline it, and finalize the adoption.</shortdesc>
+  <taskbody>
+    <prereq><note conkeyref="reuse/note-pii"/></prereq>
+    <steps>
+      <step><cmd>Click <uicontrol>Adoptions</uicontrol> and open an application with status
+          <uicontrol>New</uicontrol>.</cmd></step>
+      <step><cmd>Click <uicontrol>Start review</uicontrol> so teammates know you're working on
+          it.</cmd></step>
+      <step><cmd>Work through the review checklist.</cmd>
+        <substeps>
+          <substep><cmd>Call at least one reference and record the outcome.</cmd></substep>
+          <substep><cmd>If the adopter rents, confirm landlord approval.</cmd></substep>
+          <substep><cmd>Check the adopter's history for previous returns or
+              do-not-adopt flags.</cmd></substep>
+        </substeps></step>
+      <step><cmd>Choose an outcome.</cmd>
+        <choices>
+          <choice><uicontrol>Approve</uicontrol>: the animal moves to
+            <uicontrol>Adoption pending</uicontrol>.</choice>
+          <choice><uicontrol>Decline</uicontrol>: choose a reason. The adopter receives your
+            shelter's decline email.</choice>
+        </choices></step>
+      <step><cmd>When the adopter arrives, click <uicontrol>Finalize</uicontrol>, collect the
+          signature and fee, and print the go-home packet.</cmd></step>
+    </steps>
+    <result><p>The animal's status changes to <uicontrol>Adopted</uicontrol>, its listing is
+        removed, and a follow-up survey is scheduled for 2 weeks later.</p></result>
+  </taskbody>
+</task>

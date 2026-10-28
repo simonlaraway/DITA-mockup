@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="recording-intake">
+  <title>Recording an animal intake</title>
+  <shortdesc>Create a record for an animal that's arriving at your shelter, whether it's a
+    stray, an owner surrender or a transfer.</shortdesc>
+  <taskbody>
+    <prereq><p>Scan the animal for a microchip before you start. <ph keyref="product-name"/>
+        checks the number against your records and the national registry.</p></prereq>
+    <steps>
+      <step conkeyref="reuse/step-signin"><cmd/></step>
+      <step><cmd>Click <menucascade><uicontrol>Animals</uicontrol><uicontrol>New
+            intake</uicontrol></menucascade>.</cmd></step>
+      <step><cmd>Choose the intake type.</cmd>
+        <choicetable>
+          <chhead><choptionhd>Type</choptionhd><chdeschd>Use when</chdeschd></chhead>
+          <chrow><choption>Stray</choption><chdesc>The animal was found. Record where and by
+              whom. A stray hold starts automatically.</chdesc></chrow>
+          <chrow><choption>Owner surrender</choption><chdesc>An owner is giving up the animal.
+              Collect their contact details and reason for surrender.</chdesc></chrow>
+          <chrow><choption>Transfer in</choption><chdesc>The animal comes from a partner
+              organization. Select the partner from the list.</chdesc></chrow>
+          <chrow><choption>Return</choption><chdesc>A previously adopted animal is coming back.
+              Search for the existing record instead of creating a new one.</chdesc></chrow>
+        </choicetable></step>
+      <step><cmd>Enter the microchip number, or select <uicontrol>No chip found</uicontrol>.</cmd>
+        <stepresult><p>If the chip matches an existing record, <ph keyref="product-name"/> offers
+            to open it.</p></stepresult></step>
+      <step><cmd>Fill in the animal's name, species, breed, sex, estimated age and weight.</cmd>
+        <info><p>If the animal has no name, leave the field blank; <ph keyref="product-name"/>
+            assigns a temporary one, like "Intake 0412", that you can change later.</p></info></step>
+      <step><cmd>Click <uicontrol>Create record</uicontrol>.</cmd></step>
+    </steps>
+    <result><p>The new record opens with status <uicontrol>Intake</uicontrol> and a permanent
+        animal ID. Next, assign the animal to a kennel.</p></result>
+  </taskbody>
+</task>

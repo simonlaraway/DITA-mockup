@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="roles-permissions">
+  <title>Roles and permissions</title>
+  <shortdesc>Every user has one role. The role decides what that user can see and change.</shortdesc>
+  <refbody>
+    <simpletable relcolwidth="2* 1* 1* 1* 1* 1*">
+      <sthead>
+        <stentry>Permission</stentry><stentry>Volunteer</stentry><stentry>Staff</stentry>
+        <stentry>Vet staff</stentry><stentry>Shelter administrator</stentry><stentry>Owner</stentry>
+      </sthead>
+      <strow><stentry>View animals and photos</stentry><stentry>Yes</stentry><stentry>Yes</stentry><stentry>Yes</stentry><stentry>Yes</stentry><stentry>Yes</stentry></strow>
+      <strow><stentry>Log feedings and walks</stentry><stentry>Yes</stentry><stentry>Yes</stentry><stentry>Yes</stentry><stentry>Yes</stentry><stentry>Yes</stentry></strow>
+      <strow><stentry>Record intakes and moves</stentry><stentry>No</stentry><stentry>Yes</stentry><stentry>Yes</stentry><stentry>Yes</stentry><stentry>Yes</stentry></strow>
+      <strow><stentry>Log vaccinations and treatments</stentry><stentry>No</stentry><stentry>Limited</stentry><stentry>Yes</stentry><stentry>Yes</stentry><stentry>Yes</stentry></strow>
+      <strow><stentry>Review and approve adoptions</stentry><stentry>No</stentry><stentry>Yes</stentry><stentry>No</stentry><stentry>Yes</stentry><stentry>Yes</stentry></strow>
+      <strow><stentry>View adopter contact details</stentry><stentry>No</stentry><stentry>Yes</stentry><stentry>No</stentry><stentry>Yes</stentry><stentry>Yes</stentry></strow>
+      <strow audience="admin"><stentry>Invite and remove users</stentry><stentry>No</stentry><stentry>No</stentry><stentry>No</stentry><stentry>Yes</stentry><stentry>Yes</stentry></strow>
+      <strow audience="admin"><stentry>Change shelter settings</stentry><stentry>No</stentry><stentry>No</stentry><stentry>No</stentry><stentry>Yes</stentry><stentry>Yes</stentry></strow>
+      <strow audience="admin"><stentry>Create API keys</stentry><stentry>No</stentry><stentry>No</stentry><stentry>No</stentry><stentry>Yes</stentry><stentry>Yes</stentry></strow>
+      <strow audience="admin"><stentry>Manage billing and plan</stentry><stentry>No</stentry><stentry>No</stentry><stentry>No</stentry><stentry>No</stentry><stentry>Yes</stentry></strow>
+    </simpletable>
+    <section>
+      <title>Notes</title>
+      <p>"Limited" means staff can record vaccinations given under a standing protocol but can't
+        record diagnoses or prescriptions. Ask an administrator if you need a different role.</p>
+    </section>
+  </refbody>
+</reference>

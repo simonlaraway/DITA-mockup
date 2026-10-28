@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="animal-records">
+  <title>Animal records</title>
+  <shortdesc>An animal record holds everything your shelter knows about one animal: who they
+    are, where they are, their health, and their history with you.</shortdesc>
+  <conbody>
+    <p>Open any record to see its tabs:</p>
+    <ul>
+      <li><uicontrol>Profile</uicontrol>: name, breed, age, size, color, microchip, and a
+        public description for adoption listings.</li>
+      <li><uicontrol>Medical</uicontrol>: vaccinations, treatments, weight history and
+        spay/neuter status.</li>
+      <li><uicontrol>Behavior</uicontrol>: temperament notes, playgroup compatibility and
+        handling alerts.</li>
+      <li><uicontrol>Timeline</uicontrol>: every event, newest first, with who recorded it.</li>
+      <li><uicontrol>Documents</uicontrol>: intake forms, vet records and signed adoption
+        contracts.</li>
+    </ul>
+    <section>
+      <title>Handling alerts</title>
+      <p>When an animal needs special handling, for example "two-person handling" or "no small
+        dogs", add a handling alert on the <uicontrol>Behavior</uicontrol> tab. Alerts appear as a
+        red banner wherever the animal is shown, including on kennel cards and in the
+        <ph keyref="mobile-app"/> app.</p>
+    </section>
+    <section>
+      <title>Returning animals</title>
+      <p>If an animal comes back to your shelter, <ph keyref="product-name"/> reopens the existing
+        record instead of creating a new one, so you keep the animal's full history.</p>
+    </section>
+  </conbody>
+</concept>

@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- DITA-OT project file: the same source map, published twice with different
-     DITAVAL profiles, through one shared HTML5 publication definition. -->
+<!-- DITA-OT project file. The Shelter Guide map is published twice with different DITAVAL
+     profiles (user, admin); the API Guide is published once. All deliverables share one
+     HTML5 publication definition. -->
 <project xmlns="https://www.dita-ot.org/project">
 
-  <!-- Contexts = input + filter profile -->
-  <context id="guide-user" name="Acme Widget Guide (end users)">
-    <input href="content/widget-guide.ditamap"/>
+  <!-- Contexts = input map + filter profile -->
+  <context id="guide-user" name="CorgiBase User Guide">
+    <input href="content/shelter-guide.ditamap"/>
     <profile><ditaval href="content/filters/user.ditaval"/></profile>
   </context>
-  <context id="guide-admin" name="Acme Widget Guide (administrators)">
-    <input href="content/widget-guide.ditamap"/>
+  <context id="guide-admin" name="CorgiBase Administrator Guide">
+    <input href="content/shelter-guide.ditamap"/>
     <profile><ditaval href="content/filters/admin.ditaval"/></profile>
   </context>
+  <context id="guide-api" name="CorgiBase API Guide">
+    <input href="content/api-guide.ditamap"/>
+  </context>
 
-  <!-- Publication = transtype + parameters, shared by both deliverables -->
+  <!-- Publication = transtype + parameters, shared by all deliverables -->
   <publication id="html-base" transtype="html5">
     <param name="args.css" path="theme/custom.css"/>
     <param name="args.copycss" value="yes"/>
@@ -31,6 +35,12 @@
   <deliverable id="admin">
     <context idref="guide-admin"/>
     <output href="admin"/>
+    <publication idref="html-base"/>
+  </deliverable>
+
+  <deliverable id="api">
+    <context idref="guide-api"/>
+    <output href="api"/>
     <publication idref="html-base"/>
   </deliverable>
 </project>

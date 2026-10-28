@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="faq">
+  <title>Frequently asked questions</title>
+  <shortdesc>Quick answers to the questions shelters ask most about
+    <ph keyref="product-name"/>.</shortdesc>
+  <conbody>
+    <section>
+      <title>Is our data safe?</title>
+      <p>Yes. Data is encrypted in transit and at rest, backed up every hour, and stored in the
+        region you chose at sign-up. <ph keyref="company"/> never sells or shares shelter data.</p>
+    </section>
+    <section>
+      <title>Can we import records from our old system?</title>
+      <p>Yes. During onboarding, our team imports animals, people and medical history from a CSV
+        export or directly from most common shelter systems, at no charge.</p>
+    </section>
+    <section>
+      <title>Does it work without internet?</title>
+      <p>The web app needs a connection. The <ph keyref="mobile-app"/> app works offline for
+        everyday kennel tasks and syncs when it reconnects.</p>
+    </section>
+    <section>
+      <title>Why can't I see adopter phone numbers?</title>
+      <p>Your role doesn't include access to adopter contact details. See
+        <xref keyref="roles"/>, or ask your administrator.</p>
+    </section>
+    <section>
+      <title>Something isn't working. What should I do?</title>
+      <p>Try signing out and back in. If the problem continues, note what you were doing and
+        when, then contact support.</p>
+      <p conkeyref="reuse/contact-support"/>
+    </section>
+  </conbody>
+</concept>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="first-request">
+  <title>Making your first request</title>
+  <shortdesc>List the adoptable dogs in your sandbox shelter, then fetch one of them.</shortdesc>
+  <taskbody>
+    <prereq><p>You need a sandbox key with the <codeph>animals:read</codeph> scope, and
+        <cmdname>curl</cmdname> or any HTTP client.</p></prereq>
+    <steps>
+      <step><cmd>Store your key in an environment variable.</cmd>
+        <stepxmp><codeblock>export CORGIBASE_KEY="cb_test_..."</codeblock></stepxmp></step>
+      <step><cmd>List available dogs.</cmd>
+        <stepxmp><codeblock>curl "<ph keyref="api-base-url"/>/animals?species=dog&amp;status=available&amp;limit=2" \
+  -H "Authorization: Bearer $CORGIBASE_KEY"</codeblock></stepxmp>
+        <stepresult><p>The response contains a page of animals and a cursor for the next page:</p>
+          <codeblock>{
+  "data": [
+    { "id": "CB-2026-00412", "name": "Biscuit", "species": "dog", "status": "available", ... },
+    { "id": "CB-2026-00398", "name": "Waffles", "species": "dog", "status": "available", ... }
+  ],
+  "next_cursor": "eyJpZCI6IkNCLTIwMjYtMDAzOTgifQ"
+}</codeblock></stepresult></step>
+      <step><cmd>Fetch one animal by ID.</cmd>
+        <stepxmp><codeblock>curl "<ph keyref="api-base-url"/>/animals/CB-2026-00412" \
+  -H "Authorization: Bearer $CORGIBASE_KEY"</codeblock></stepxmp></step>
+    </steps>
+    <result><p>You've authenticated and read data from the API. Next, learn how to page through
+        large result sets, or subscribe to webhooks so you don't need to poll.</p></result>
+  </taskbody>
+</task>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<!-- Shelter Guide: published as the User Guide (admin content removed) and the
+     Administrator Guide (admin content flagged). See content/filters/. -->
+<map xml:lang="en-US">
+  <title><ph keyref="product-name"/> Shelter Guide</title>
+
+  <mapref href="keys.ditamap"/>
+
+  <!-- Topic keys -->
+  <keydef keys="about" href="topics/getting-started/about-corgibase.dita"/>
+  <keydef keys="data-model" href="topics/getting-started/shelter-data-model.dita"/>
+  <keydef keys="signing-in" href="topics/getting-started/signing-in.dita"/>
+  <keydef keys="roles" href="topics/getting-started/roles-permissions.dita"/>
+  <keydef keys="animal-records" href="topics/animals/animal-records.dita"/>
+  <keydef keys="recording-intake" href="topics/animals/recording-intake.dita"/>
+  <keydef keys="animal-fields" href="topics/animals/animal-fields.dita"/>
+  <keydef keys="uploading-photos" href="topics/animals/uploading-photos.dita"/>
+  <keydef keys="assigning-kennels" href="topics/animals/assigning-kennels.dita"/>
+  <keydef keys="medical-records" href="topics/care/medical-records.dita"/>
+  <keydef keys="logging-vaccination" href="topics/care/logging-vaccination.dita"/>
+  <keydef keys="vaccination-schedule" href="topics/care/vaccination-schedule.dita"/>
+  <keydef keys="adoption-workflow" href="topics/adoptions/adoption-workflow.dita"/>
+  <keydef keys="processing-application" href="topics/adoptions/processing-application.dita"/>
+  <keydef keys="adoption-statuses" href="topics/adoptions/adoption-statuses.dita"/>
+  <keydef keys="publishing-listings" href="topics/adoptions/publishing-listings.dita"/>
+  <keydef keys="volunteer-shifts" href="topics/volunteers/volunteer-shifts.dita"/>
+  <keydef keys="managing-users" href="topics/admin/managing-users.dita"/>
+  <keydef keys="shelter-settings" href="topics/admin/shelter-settings.dita"/>
+  <keydef keys="exporting-reports" href="topics/admin/exporting-reports.dita"/>
+  <keydef keys="plans-billing" href="topics/admin/plans-billing.dita"/>
+  <keydef keys="keyboard-shortcuts" href="topics/help/keyboard-shortcuts.dita"/>
+  <keydef keys="faq" href="topics/help/faq.dita"/>
+
+  <!-- Navigation -->
+  <topichead navtitle="Getting started">
+    <topicref keyref="about"/>
+    <topicref keyref="data-model"/>
+    <topicref keyref="signing-in"/>
+    <topicref keyref="roles"/>
+  </topichead>
+  <topichead navtitle="Animals">
+    <topicref keyref="animal-records">
+      <topicref keyref="recording-intake"/>
+      <topicref keyref="uploading-photos"/>
+      <topicref keyref="assigning-kennels"/>
+      <topicref keyref="animal-fields"/>
+    </topicref>
+  </topichead>
+  <topichead navtitle="Medical care">
+    <topicref keyref="medical-records">
+      <topicref keyref="logging-vaccination"/>
+      <topicref keyref="vaccination-schedule"/>
+    </topicref>
+  </topichead>
+  <topichead navtitle="Adoptions">
+    <topicref keyref="adoption-workflow">
+      <topicref keyref="processing-application"/>
+      <topicref keyref="publishing-listings"/>
+      <topicref keyref="adoption-statuses"/>
+    </topicref>
+  </topichead>
+  <topichead navtitle="Volunteers">
+    <topicref keyref="volunteer-shifts"/>
+  </topichead>
+  <!-- Whole section is filtered out of the User Guide -->
+  <topichead navtitle="Administration" audience="admin">
+    <topicref keyref="managing-users"/>
+    <topicref keyref="shelter-settings"/>
+    <topicref keyref="exporting-reports"/>
+    <topicref keyref="plans-billing"/>
+  </topichead>
+  <topichead navtitle="Help">
+    <topicref keyref="keyboard-shortcuts"/>
+    <topicref keyref="faq"/>
+  </topichead>
+
+  <!-- Related links -->
+  <reltable>
+    <relheader>
+      <relcolspec type="concept"/>
+      <relcolspec type="task"/>
+      <relcolspec type="reference"/>
+    </relheader>
+    <relrow>
+      <relcell><topicref keyref="data-model"/></relcell>
+      <relcell><topicref keyref="recording-intake"/></relcell>
+      <relcell><topicref keyref="animal-fields"/></relcell>
+    </relrow>
+    <relrow>
+      <relcell><topicref keyref="medical-records"/></relcell>
+      <relcell><topicref keyref="logging-vaccination"/></relcell>
+      <relcell><topicref keyref="vaccination-schedule"/></relcell>
+    </relrow>
+    <relrow>
+      <relcell><topicref keyref="adoption-workflow"/></relcell>
+      <relcell><topicref keyref="processing-application"/></relcell>
+      <relcell><topicref keyref="adoption-statuses"/></relcell>
+    </relrow>
+    <relrow>
+      <relcell/>
+      <relcell><topicref keyref="signing-in"/><topicref keyref="managing-users" audience="admin"/></relcell>
+      <relcell><topicref keyref="roles"/></relcell>
+    </relrow>
+  </reltable>
+</map>

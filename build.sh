@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Mock DITA -> HTML5 publishing pipeline.
 # Usage: ./build.sh            build every deliverable in project.xml
-#        ./build.sh user       build one deliverable (user | admin)
+#        ./build.sh user       build one deliverable (user | admin | api)
 set -euo pipefail
 
 DITA_OT_VERSION="4.4.1"
@@ -29,6 +29,8 @@ fi
 
 echo "==> Publishing (${1:-all deliverables})"
 cd "$ROOT"
+# Start clean so pages for deleted topics don't linger.
+rm -rf "out/${1:-}"
 mkdir -p out
 "$DITA" "${args[@]}" 2>&1 | tee out/build.log
 

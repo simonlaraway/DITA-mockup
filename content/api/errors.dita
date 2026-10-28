@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="errors">
+  <title>Errors</title>
+  <shortdesc>The API uses standard HTTP status codes and returns a JSON error body that explains
+    what went wrong.</shortdesc>
+  <refbody>
+    <section>
+      <title>Error format</title>
+      <codeblock>{
+  "error": {
+    "code": "validation_failed",
+    "message": "microchip must be 9, 10 or 15 digits",
+    "field": "microchip",
+    "request_id": "req_7Hc2xK9"
+  }
+}</codeblock>
+      <p>Include the <codeph>request_id</codeph> when you contact support.</p>
+    </section>
+    <simpletable relcolwidth="1* 2* 4*">
+      <sthead><stentry>Status</stentry><stentry>Code</stentry><stentry>Meaning</stentry></sthead>
+      <strow><stentry>400</stentry><stentry><codeph>invalid_request</codeph></stentry><stentry>The request is malformed, for example invalid JSON.</stentry></strow>
+      <strow><stentry>401</stentry><stentry><codeph>unauthorized</codeph></stentry><stentry>The API key is missing, invalid or deleted.</stentry></strow>
+      <strow><stentry>403</stentry><stentry><codeph>forbidden</codeph></stentry><stentry>The key doesn't have the required scope, or your plan doesn't include write access.</stentry></strow>
+      <strow><stentry>404</stentry><stentry><codeph>not_found</codeph></stentry><stentry>The resource doesn't exist, or belongs to another shelter.</stentry></strow>
+      <strow><stentry>409</stentry><stentry><codeph>conflict</codeph></stentry><stentry>The change conflicts with the current state, for example approving an application for an animal that's already adopted.</stentry></strow>
+      <strow><stentry>422</stentry><stentry><codeph>validation_failed</codeph></stentry><stentry>A field value is invalid. See <codeph>field</codeph> and <codeph>message</codeph>.</stentry></strow>
+      <strow><stentry>429</stentry><stentry><codeph>rate_limited</codeph></stentry><stentry>Too many requests. Retry after the time in <codeph>Retry-After</codeph>.</stentry></strow>
+      <strow><stentry>500</stentry><stentry><codeph>internal_error</codeph></stentry><stentry>Something went wrong on our side. Retry with backoff.</stentry></strow>
+    </simpletable>
+    <section>
+      <p conkeyref="reuse/contact-support"/>
+    </section>
+  </refbody>
+</reference>

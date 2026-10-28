@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="subscribing-webhooks">
+  <title>Subscribing to webhooks</title>
+  <shortdesc>Get notified when something changes in your shelter, instead of polling the API.</shortdesc>
+  <taskbody>
+    <prereq><p>You need a key with the <codeph>webhooks:manage</codeph> scope and an HTTPS
+        endpoint that can receive <codeph>POST</codeph> requests.</p></prereq>
+    <steps>
+      <step><cmd>Create a subscription for the events you need.</cmd>
+        <stepxmp><codeblock>curl -X POST "<ph keyref="api-base-url"/>/webhooks" \
+  -H "Authorization: Bearer $CORGIBASE_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.org/hooks/corgibase",
+       "events": ["animal.status_changed", "adoption.finalized"]}'</codeblock></stepxmp>
+        <stepresult><p>The response includes a <codeph>signing_secret</codeph>. Store it
+            securely.</p></stepresult></step>
+      <step><cmd>In your endpoint, verify each delivery's signature.</cmd>
+        <info><p>Compute an HMAC-SHA256 of the raw request body with your signing secret, and
+            compare it with the <codeph>CorgiBase-Signature</codeph> header. Reject requests that
+            don't match.</p></info></step>
+      <step><cmd>Respond with any <codeph>2xx</codeph> status within 10 seconds.</cmd>
+        <info><p>Failed deliveries are retried with backoff for up to 24 hours. Use the event's
+            <codeph>id</codeph> to ignore duplicates.</p></info></step>
+    </steps>
+    <result>
+      <p>Available events:</p>
+      <ul>
+        <li><codeph>animal.created</codeph>, <codeph>animal.updated</codeph>,
+          <codeph>animal.status_changed</codeph></li>
+        <li><codeph>adoption.application_received</codeph>, <codeph>adoption.approved</codeph>,
+          <codeph>adoption.finalized</codeph></li>
+        <li><codeph>vaccination.due</codeph></li>
+      </ul>
+    </result>
+  </taskbody>
+</task>
