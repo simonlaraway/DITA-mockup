@@ -65,6 +65,14 @@ class BlockDiffTests(unittest.TestCase):
         self.assertEqual([d.text for d in p.iter("del")], ["old"])
         self.assertEqual(" ".join(p.text_content().split()), "Restart the old service now.")
 
+    def test_deleted_word_before_punctuation_is_spaced(self):
+        n, head = diff("<p>Choose a theme and notification level.</p>",
+                       "<p>Choose a theme, notification level.</p>")
+        p = head.find(".//main//p")
+        self.assertEqual(lxml.html.tostring(p, encoding="unicode"),
+                         '<p class="diff-changed"><span class="diff-anchor" id="diff-1"></span>'
+                         'Choose a theme <del>and</del><ins>,</ins> notification level.</p>')
+
     def test_changed_text_inside_inline_element(self):
         n, head = diff('<p>Version <span class="ph">3.2</span> is out.</p>',
                        '<p>Version <span class="ph">3.3</span> is out.</p>')
