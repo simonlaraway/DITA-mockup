@@ -3,5 +3,5 @@
 <concept id="release-notes">
   <title>Release notes</title>
   <shortdesc>What's new in <ph keyref="product-name"/> <ph keyref="product-version"/>.</shortdesc>
-  <conbody><ul><li>Faster startup.</li><li>New dark theme.</li></ul></conbody>
+  <conbody><ul><li>Faster startup.</li><li>New dark theme.</li><li>Keyboard shortcuts for every menu.</li></ul></conbody>
 </concept>

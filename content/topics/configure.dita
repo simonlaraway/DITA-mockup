@@ -7,7 +7,7 @@
     <prereq><note conkeyref="reuse/note-backup"/></prereq>
     <steps>
       <step><cmd>Open <menucascade><uicontrol>Settings</uicontrol><uicontrol>General</uicontrol></menucascade>.</cmd></step>
-      <step><cmd>Choose a theme and notification level.</cmd></step>
+      <step><cmd>Choose a theme, notification level, and font size.</cmd></step>
       <step audience="admin"><cmd>Enable audit logging under
           <menucascade><uicontrol>Settings</uicontrol><uicontrol>Security</uicontrol></menucascade>.</cmd></step>
       <step><cmd>Click <uicontrol>Save</uicontrol>.</cmd></step>
