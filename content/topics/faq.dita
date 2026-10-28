@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="faq">
+  <title>Frequently Asked Questions about <ph keyref="product-name"/></title>
+  <shortdesc><ph keyref="product-name"/> <ph keyref="product-version"/> is a configurable
+    widget appliance from <ph keyref="company"/>.</shortdesc>
+  <conbody>
+    <section>
+      <title>What's is the ACME Widget?</title>
+      <p>The ACME Widget is a configurable widget appliance from <ph keyref="company"/>. It does
+      various tasks depending on its configuration.</p>
+    </section>
+    <section>
+    <title>What are the main features of the ACME Widget?</title>
+    <p>The main features of the ACME Widget include:</p>
+    <ul>
+      <li>Configurable tasks based on user settings</li>
+      <li>Integration with various third-party services</li>
+      <li>Real-time monitoring and reporting</li>
+      <li>Secure data handling and encryption</li>
+    </ul>
+    </section>
+  </conbody>
+</concept>
