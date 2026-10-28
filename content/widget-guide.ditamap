@@ -13,4 +13,5 @@
     </topicref>
   </topicref>
   <topicref keyref="troubleshooting"/>
+  <topicref href="topics/release-notes.dita"/>
 </map>

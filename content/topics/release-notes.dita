@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="release-notes">
+  <title>Release notes</title>
+  <shortdesc>What's new in <ph keyref="product-name"/> <ph keyref="product-version"/>.</shortdesc>
+  <conbody><ul><li>Faster startup.</li><li>New dark theme.</li></ul></conbody>
+</concept>

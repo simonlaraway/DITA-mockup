@@ -7,7 +7,7 @@
   <taskbody>
     <prereq>
       <note id="warn-power" type="warning">Disconnect the <ph keyref="product-name"/> from power
-        before you open the housing.</note>
+        and wait 30 seconds before you open the housing.</note>
       <note id="note-backup" type="tip">Export your configuration before you upgrade so you can
         roll back if needed.</note>
       <p id="contact-support">If the problem persists, contact <xref keyref="support-url"/>.</p>

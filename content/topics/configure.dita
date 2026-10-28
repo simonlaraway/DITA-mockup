@@ -10,7 +10,6 @@
       <step><cmd>Choose a theme and notification level.</cmd></step>
       <step audience="admin"><cmd>Enable audit logging under
           <menucascade><uicontrol>Settings</uicontrol><uicontrol>Security</uicontrol></menucascade>.</cmd></step>
-      <step audience="admin"><cmd>Push the configuration to all enrolled devices.</cmd></step>
       <step><cmd>Click <uicontrol>Save</uicontrol>.</cmd></step>
     </steps>
     <postreq><p>For a full list of options, see <xref keyref="settings"/>.</p></postreq>
