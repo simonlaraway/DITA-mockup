@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="copyright" content="(C) Copyright 2026"><meta name="generator" content="DITA-OT"><meta name="description" content="Accept your invitation, set a password, and turn on two-step verification."><title>Signing in for the first time</title><link rel="stylesheet" type="text/css" href="../../css/commonltr.css"><link rel="stylesheet" type="text/css" href="../../css/custom.css"><style>/* Staging preview: change highlighting. Inlined into every staged page by scripts/stage_diff.py. */
+:root {
+  --diff-add: #1a7f37;  --diff-add-bg: #e6ffec;  --diff-ins-bg: #abf2bc;
+  --diff-chg: #0969da;  --diff-chg-bg: #ddf4ff;
+  --diff-del: #cf222e;  --diff-del-bg: #ffebe9;  --diff-delw-bg: #ffcecb;
+}
+
+/* Banner */
+.staging-banner {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1rem;
+  grid-column: 1 / -1; margin: 0 0 1rem; padding: .6rem 1rem;
+  background: #1f2430; color: #fff; font-size: .9rem;
+}
+main > .staging-banner { margin: -2rem -3rem 1.5rem; padding: .6rem 3rem; }
+.staging-banner a { color: #9ec1ff; }
+.staging-tag { background: #ffb020; color: #1f2430; font-weight: 700; padding: .1rem .5rem; border-radius: 3px; }
+.staging-links { margin-left: auto; }
+.staging-banner button {
+  background: #3a4252; color: #fff; border: 0; border-radius: 3px; padding: .15rem .55rem; cursor: pointer;
+}
+.staging-banner button:hover { background: #4d5770; }
+
+/* Blocks. Backgrounds are !important so they win over DITAVAL flag colors (inline styles);
+   the [Admin] label still shows which items are admin-only. */
+.diff-added, .diff-changed, .diff-removed { border-radius: 3px; padding-left: .5rem; scroll-margin-top: 4rem; }
+.diff-added   { background: var(--diff-add-bg) !important; box-shadow: inset 4px 0 0 var(--diff-add); }
+.diff-changed { background: var(--diff-chg-bg) !important; box-shadow: inset 4px 0 0 var(--diff-chg); }
+.diff-removed { background: var(--diff-del-bg) !important; box-shadow: inset 4px 0 0 var(--diff-del);
+                text-decoration: line-through; text-decoration-color: var(--diff-del); opacity: .85; }
+tr.diff-added > *   { background: var(--diff-add-bg); }
+tr.diff-changed > * { background: var(--diff-chg-bg); }
+tr.diff-removed > * { background: var(--diff-del-bg); text-decoration: line-through; }
+.diff-current { outline: 2px solid #2f5bd3; outline-offset: 2px; }
+
+/* Words inside a changed block */
+.diff-changed ins { background: var(--diff-ins-bg); text-decoration: none; border-radius: 2px; }
+.diff-changed del { background: var(--diff-delw-bg); color: #82071e; border-radius: 2px; }
+
+/* Whole pages */
+.diff-page-added   { box-shadow: inset 4px 0 0 var(--diff-add); }
+.diff-page-removed { box-shadow: inset 4px 0 0 var(--diff-del); }
+.diff-page-removed article { text-decoration: line-through; text-decoration-color: var(--diff-del); opacity: .8; }
+
+/* TOC markers */
+li.diff-toc-changed > a::after { content: " \25CF"; color: var(--diff-chg); }
+li.diff-toc-added > a::after {
+  content: "new"; margin-left: .4rem; padding: 0 .35rem; border-radius: 3px;
+  font-size: .7rem; font-weight: 700; color: #fff; background: var(--diff-add); vertical-align: middle;
+}
+
+/* Summary page (changes.html) */
+body.staging-summary { display: block; }
+body.staging-summary main { margin: 0 auto; }
+.summary-added td:nth-child(2)   { color: var(--diff-add); font-weight: 600; }
+.summary-changed td:nth-child(2) { color: var(--diff-chg); font-weight: 600; }
+.summary-removed td:nth-child(2) { color: var(--diff-del); font-weight: 600; }
+
+@media (max-width: 760px) {
+  main > .staging-banner { margin: -1.5rem -1rem 1rem; padding: .6rem 1rem; }
+}
+</style></head><body id="signing-in"><nav class="toc" role="navigation"><ul><li><span>Getting started</span><ul><li class="diff-toc-added"><a href="../../topics/getting-started/about-corgibase.html">About CorgiBase</a></li><li class="diff-toc-added"><a href="../../topics/getting-started/shelter-data-model.html">How CorgiBase organizes shelter data</a></li><li class="diff-toc-added"><a href="../../topics/getting-started/signing-in.html">Signing in for the first time</a></li><li class="diff-toc-added"><a href="../../topics/getting-started/roles-permissions.html">Roles and permissions</a></li></ul></li><li><span>Animals</span><ul><li class="diff-toc-added"><a href="../../topics/animals/animal-records.html">Animal records</a><ul><li class="diff-toc-added"><a href="../../topics/animals/recording-intake.html">Recording an animal intake</a></li><li class="diff-toc-added"><a href="../../topics/animals/uploading-photos.html">Uploading animal photos</a></li><li class="diff-toc-added"><a href="../../topics/animals/assigning-kennels.html">Assigning an animal to a kennel</a></li><li class="diff-toc-added"><a href="../../topics/animals/animal-fields.html">Animal record fields</a></li></ul></li></ul></li><li><span>Medical care</span><ul><li class="diff-toc-added"><a href="../../topics/care/medical-records.html">Medical records and care plans</a><ul><li class="diff-toc-added"><a href="../../topics/care/logging-vaccination.html">Logging a vaccination</a></li><li class="diff-toc-added"><a href="../../topics/care/vaccination-schedule.html">Default dog vaccination schedule</a></li></ul></li></ul></li><li><span>Adoptions</span><ul><li class="diff-toc-added"><a href="../../topics/adoptions/adoption-workflow.html">How adoptions work</a><ul><li class="diff-toc-added"><a href="../../topics/adoptions/processing-application.html">Processing an adoption application</a></li><li class="diff-toc-added"><a href="../../topics/adoptions/publishing-listings.html">Publishing adoptable animals to your website</a></li><li class="diff-toc-added"><a href="../../topics/adoptions/adoption-statuses.html">Animal statuses</a></li></ul></li></ul></li><li><span>Volunteers</span><ul><li class="diff-toc-added"><a href="../../topics/volunteers/volunteer-shifts.html">Scheduling volunteer shifts</a></li></ul></li><li><span>Help</span><ul><li class="diff-toc-added"><a href="../../topics/help/keyboard-shortcuts.html">Keyboard shortcuts</a></li><li class="diff-toc-added"><a href="../../topics/help/faq.html">Frequently asked questions</a></li></ul></li></ul></nav><main role="main" class="diff-page-added"><div class="staging-banner" role="note"><span class="staging-tag">Staging · PR #6</span><span><strong>New page</strong> in this PR</span><span class="staging-links"><a href="../../../changes.html">All changes</a></span></div><article role="article" aria-labelledby="ariaid-title1">
+  <h1 class="title topictitle1" id="ariaid-title1">Signing in for the first time</h1>
+  
+  <div class="body taskbody"><p class="shortdesc">Accept your invitation, set a password, and turn on two-step verification.</p>
+    <section class="section prereq"><div class="tasklabel"><h2 class="sectiontitle tasklabel">Before you begin</h2></div><p class="p">An administrator at your shelter must invite you first. Look for an email from
+        <span class="ph">CorgiBase</span> with the subject "You're invited to join your shelter".</p></section>
+    <section><div class="tasklabel"><h2 class="sectiontitle tasklabel">Procedure</h2></div><ol class="ol steps"><li class="li step stepexpand"><span class="ph cmd">Open the invitation email and click <span class="ph uicontrol">Accept invitation</span>.</span>
+        <div class="itemgroup info"><p class="p">Invitations expire after 7 days. If yours has expired, ask your administrator to
+            resend it.</p></div></li><li class="li step stepexpand"><span class="ph cmd">Enter your name and choose a password of at least 12 characters.</span></li><li class="li step stepexpand"><span class="ph cmd">Set up two-step verification.</span>
+        <ul class="ul choices">
+          <li class="li choice">Scan the QR code with an authenticator app, then enter the 6-digit code.</li>
+          <li class="li choice">Or register a security key or passkey.</li>
+        </ul>
+        <div class="itemgroup stepresult"><p class="p">You see 10 backup codes. Store them somewhere safe; each one works once
+            if you lose your device.</p></div></li><li class="li step stepexpand"><span class="ph cmd">Click <span class="ph uicontrol">Finish</span>.</span></li></ol></section>
+    <section class="section result"><div class="tasklabel"><h2 class="sectiontitle tasklabel">Results</h2></div><p class="p">The <span class="keyword wintitle">Today</span> dashboard opens. It shows the animals, tasks and
+        shifts that need your attention.</p></section>
+    <section class="section postreq"><div class="tasklabel"><h2 class="sectiontitle tasklabel">What to do next</h2></div><p class="p">Install the <span class="ph">CorgiBase Kennel</span> app on your phone and sign in with the
+        same account to work from the kennel floor.</p></section>
+  </div>
+<nav role="navigation" class="related-links"><div class="linklist relref"><strong>Related reference</strong><br><ul class="linklist"><li class="linklist"><a class="link" href="roles-permissions.html" title="Every user has one role. The role decides what that user can see and change.">Roles and permissions</a></li></ul></div></nav></article></main><script>
+(function () {
+  var marks = document.querySelectorAll('.diff-anchor'), cur = -1;
+  function go(step) {
+    if (!marks.length) return;
+    cur = (cur + step + marks.length) % marks.length;
+    var el = marks[cur].parentElement;
+    el.scrollIntoView({behavior: 'smooth', block: 'center'});
+    document.querySelectorAll('.diff-current').forEach(function (e) { e.classList.remove('diff-current'); });
+    el.classList.add('diff-current');
+  }
+  document.querySelectorAll('[data-diff-step]').forEach(function (b) {
+    b.addEventListener('click', function () { go(+b.getAttribute('data-diff-step')); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.target.closest && e.target.closest('input,textarea')) return;
+    if (e.key === 'n') go(1); else if (e.key === 'p') go(-1);
+  });
+})();
+</script></body></html>
