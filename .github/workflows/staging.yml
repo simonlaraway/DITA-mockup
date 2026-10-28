@@ -1,0 +1,113 @@
+name: Staging preview
+
+# Staging: every PR gets a preview of the published HTML with its changes highlighted,
+# deployed to gh-pages under pr-preview/pr-<N>/ and linked in a PR comment. It rebuilds on
+# every push to the PR and is removed when the PR is closed (merged or not).
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+permissions:
+  contents: write        # push the preview to gh-pages
+  pull-requests: write   # post the preview comment
+
+env:
+  PREVIEW_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr-preview/pr-${{ github.event.number }}/
+  PROD_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+
+jobs:
+  preview:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: staging-${{ github.event.number }}
+      cancel-in-progress: true
+    steps:
+      # The default PR checkout is the merge commit: exactly what main would look like.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: '3.12'
+
+      - run: pip install -r scripts/requirements.txt
+
+      - uses: actions/cache@v6
+        with:
+          path: tools
+          key: dita-ot-${{ hashFiles('build.sh') }}
+
+      - name: Build PR (head)
+        run: ./build.sh
+
+      # The baseline is built with the base commit's own build.sh, so it matches production.
+      - name: Build base
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git worktree add ../base "$BASE_SHA"
+          ln -s "$PWD/tools" ../base/tools
+          if ! (cd ../base && ./build.sh); then
+            echo "::warning::Base build failed; every page will be shown as new."
+            rm -rf ../base/out && mkdir -p ../base/out
+          fi
+
+      - name: Diff and annotate
+        run: |
+          python3 scripts/stage_diff.py \
+            --base ../base/out --head out --dest staged \
+            --pr "${{ github.event.number }}" \
+            --site-url "$PREVIEW_URL" --prod-url "$PROD_URL" \
+            --base-sha "${{ github.event.pull_request.base.sha }}" \
+            --head-sha "${{ github.event.pull_request.head.sha }}"
+
+      - name: Deploy preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: staged
+          action: deploy
+          comment: false
+
+      - name: Comment on PR
+        uses: marocchino/sticky-pull-request-comment@v3
+        with:
+          header: staging-preview
+          path: staged/changes.md
+
+      - name: Comment on failure
+        if: failure()
+        uses: marocchino/sticky-pull-request-comment@v3
+        with:
+          header: staging-preview
+          message: |
+            ### Staging preview
+            The staging build **failed** for `${{ github.event.pull_request.head.sha }}`.
+            See the [workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+
+  cleanup:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Remove preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          action: remove
+          comment: false
+
+      - name: Update comment
+        uses: marocchino/sticky-pull-request-comment@v3
+        with:
+          header: staging-preview
+          message: |
+            ### Staging preview
+            This PR is closed, so its preview has been removed.
+            ${{ github.event.pull_request.merged && format('The changes are live in production: {0}', env.PROD_URL) || '' }}

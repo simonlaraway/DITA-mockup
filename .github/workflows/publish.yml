@@ -1,22 +1,22 @@
 name: Publish to GitHub Pages
 
+# Production: every push to main builds both guides and deploys them to the root of the
+# gh-pages branch. PR previews live under pr-preview/ on the same branch (see staging.yml)
+# and are left alone here.
 on:
   push:
     branches: [main]
-  pull_request:          # build only, to catch DITA errors before merge
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages-${{ github.ref }}
-  cancel-in-progress: true
+  group: production
+  cancel-in-progress: false
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -35,17 +35,10 @@ jobs:
       - name: Build all deliverables
         run: ./build.sh
 
-      - uses: actions/upload-pages-artifact@v5
+      - name: Deploy to gh-pages (root)
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          path: out
-
-  deploy:
-    if: github.event_name != 'pull_request'
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v5
+          folder: out
+          branch: gh-pages
+          clean-exclude: pr-preview/
+          commit-message: Publish ${{ github.sha }}

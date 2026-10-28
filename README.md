@@ -62,13 +62,56 @@ Other output formats are just another `<publication transtype="…">` (for examp
 
 ## Publishing (GitHub Pages)
 
-`.github/workflows/publish.yml` runs `./build.sh` on GitHub Actions:
+GitHub Pages serves the `gh-pages` branch. Production is at the root and PR previews are under
+`pr-preview/`.
 
-- **Push to `main`** builds both guides and deploys `out/` to
-  <https://simonlaraway.github.io/DITA-mockup/>. The landing page (`theme/index.html`) links to
-  `user/` and `admin/`.
-- **Pull requests** only build. A DITA error fails the check, so broken content can't be merged
-  without anyone noticing.
+- **Production:** `.github/workflows/publish.yml`. Every push to `main` runs `./build.sh` and
+  deploys `out/` to the root of `gh-pages`: <https://simonlaraway.github.io/DITA-mockup/>. The
+  landing page (`theme/index.html`) links to `user/` and `admin/`. Deploys never touch
+  `pr-preview/`.
 - **Manual run:** Actions → *Publish to GitHub Pages* → *Run workflow*.
 
 DITA-OT is cached between runs. Changing `DITA_OT_VERSION` in `build.sh` invalidates the cache.
+
+## Staging previews (pull requests)
+
+`.github/workflows/staging.yml` runs when a PR is opened, reopened or updated:
+
+1. Builds the PR (the merge commit, i.e. what `main` would become).
+2. Builds the PR's base commit with that commit's own `build.sh`, which gives the same output
+   as production.
+3. Runs `scripts/stage_diff.py`, which compares the two outputs page by page and writes an
+   annotated copy:
+   - Added blocks get a green bar.
+   - Changed blocks get a blue bar, with word-level <ins>insertions</ins> and <del>deletions</del>.
+   - Removed blocks are shown in place, in red strikethrough.
+   - The TOC marks changed pages with a dot and new pages with "new".
+   - Every page gets a staging banner with ▲/▼ buttons to jump between changes (keys `p` and `n`).
+   - `changes.html` lists every affected page.
+4. Deploys the result to <https://simonlaraway.github.io/DITA-mockup/pr-preview/pr-N/>.
+5. Posts a comment on the PR with a table of the changed pages, and updates that same comment
+   on each push.
+
+Closing or merging the PR removes the preview.
+
+Because the comparison uses the **rendered** HTML, indirect changes are highlighted too. Editing a
+conref'd warning in `shared/reuse.dita` highlights it on every page that reuses it. Changing a key
+value (for example `product-version`) highlights every place it appears. Filtering is handled per
+deliverable, so a change to admin-only content shows up only in the admin guide.
+
+Run it locally:
+
+```
+python3 -m venv .venv && .venv/bin/pip install -r scripts/requirements.txt
+git worktree add ../base main && ln -s "$PWD/tools" ../base/tools && (cd ../base && ./build.sh)
+./build.sh
+.venv/bin/python scripts/stage_diff.py --base ../base/out --head out --dest staged \
+    --pr 0 --site-url "file://$PWD/staged/"
+open staged/changes.html
+```
+
+Tests: `.venv/bin/python -m unittest discover -s scripts`
+
+Limits:
+- Moving a block shows as one removal plus one addition.
+- PRs from forks get a read-only token, so they can't deploy or comment.
