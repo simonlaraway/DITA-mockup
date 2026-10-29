@@ -50,7 +50,7 @@ jobs:
       - name: Unit tests
         run: |
           python3 -m unittest discover -s scripts
-          node --test scripts/
+          node --test scripts/*.test.mjs
 
       - uses: actions/cache@v6
         with:

@@ -1,4 +1,4 @@
-// Tests for theme/review-widget.js pure helpers. Run: node --test scripts/
+// Tests for theme/review-widget.js pure helpers. Run: node --test scripts/*.test.mjs
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

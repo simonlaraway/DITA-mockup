@@ -175,7 +175,7 @@ SOURCEMAP=1 ./build.sh   # build the head with source locations
 open staged/changes.html
 ```
 
-Tests: `.venv/bin/python -m unittest discover -s scripts` and `node --test scripts/`
+Tests: `.venv/bin/python -m unittest discover -s scripts` and `node --test scripts/*.test.mjs`
 
 Limits:
 - Moving a block shows as one removal plus one addition.
