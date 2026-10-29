@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
+<!-- API Guide: a brief guide for developers integrating with the CorgiBase REST API. -->
+<map xml:lang="en-US">
+  <title><ph keyref="product-name"/> API Guide</title>
+
+  <mapref href="keys.ditamap"/>
+
+  <keydef keys="api-overview" href="api/api-overview.dita"/>
+  <keydef keys="creating-api-key" href="api/creating-api-key.dita"/>
+  <keydef keys="first-request" href="api/first-request.dita"/>
+  <keydef keys="pagination-rate-limits" href="api/pagination-rate-limits.dita"/>
+  <keydef keys="subscribing-webhooks" href="api/subscribing-webhooks.dita"/>
+  <keydef keys="endpoints" href="api/endpoints.dita"/>
+  <keydef keys="animal-object" href="api/animal-object.dita"/>
+  <keydef keys="errors" href="api/errors.dita"/>
+
+  <topicref keyref="api-overview">
+    <topicref keyref="creating-api-key"/>
+    <topicref keyref="first-request"/>
+  </topicref>
+  <topicref keyref="pagination-rate-limits"/>
+  <topicref keyref="subscribing-webhooks"/>
+  <topichead navtitle="Reference">
+    <topicref keyref="endpoints"/>
+    <topicref keyref="animal-object"/>
+    <topicref keyref="errors"/>
+  </topichead>
+</map>

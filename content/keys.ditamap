@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
-<!-- Key definitions: variables and indirect topic addresses. -->
+<!-- Shared key definitions: product variables and external links. Used by every guide. -->
 <map>
-  <title>Key definitions</title>
+  <title>Shared key definitions</title>
 
   <!-- Text variables -->
-  <keydef keys="product-name">
-    <topicmeta><keywords><keyword>Acme Widget</keyword></keywords></topicmeta>
+  <keydef keys="product-name"><topicmeta><keywords><keyword>CorgiBase</keyword></keywords></topicmeta></keydef>
+  <keydef keys="product-release"><topicmeta><keywords><keyword>2026.10</keyword></keywords></topicmeta></keydef>
+  <keydef keys="company"><topicmeta><keywords><keyword>CorgiBase, Inc.</keyword></keywords></topicmeta></keydef>
+  <keydef keys="mobile-app"><topicmeta><keywords><keyword>CorgiBase Kennel</keyword></keywords></topicmeta></keydef>
+  <keydef keys="api-version"><topicmeta><keywords><keyword>v2</keyword></keywords></topicmeta></keydef>
+  <keydef keys="api-base-url"><topicmeta><keywords><keyword>https://api.corgibase.example/v2</keyword></keywords></topicmeta></keydef>
+  <keydef keys="support-email"><topicmeta><keywords><keyword>support@corgibase.example</keyword></keywords></topicmeta></keydef>
+  <keydef keys="rate-limit"><topicmeta><keywords><keyword>600</keyword></keywords></topicmeta></keydef>
+
+  <!-- External links -->
+  <keydef keys="app-url" href="https://app.corgibase.example" scope="external" format="html">
+    <topicmeta><linktext>app.corgibase.example</linktext></topicmeta>
   </keydef>
-  <keydef keys="product-version">
-    <topicmeta><keywords><keyword>3.2</keyword></keywords></topicmeta>
+  <keydef keys="support-url" href="https://support.corgibase.example" scope="external" format="html">
+    <topicmeta><linktext>CorgiBase Support</linktext></topicmeta>
   </keydef>
-  <keydef keys="company">
-    <topicmeta><keywords><keyword>Acme Corporation</keyword></keywords></topicmeta>
+  <keydef keys="status-url" href="https://status.corgibase.example" scope="external" format="html">
+    <topicmeta><linktext>status.corgibase.example</linktext></topicmeta>
   </keydef>
-  <keydef keys="support-url" href="https://support.example.com/widget" scope="external" format="html">
-    <topicmeta><linktext>Acme Support Portal</linktext></topicmeta>
+  <keydef keys="api-guide" href="https://simonlaraway.github.io/DITA-mockup/api/index.html" scope="external" format="html">
+    <topicmeta><linktext>CorgiBase API Guide</linktext></topicmeta>
   </keydef>
 
   <!-- Reuse warehouse, addressed by key for conkeyref -->
   <keydef keys="reuse" href="shared/reuse.dita" processing-role="resource-only"/>
-
-  <!-- Topic keys: the root map points at these instead of file paths -->
-  <keydef keys="overview" href="topics/overview.dita"/>
-  <keydef keys="install" href="topics/install.dita"/>
-  <keydef keys="configure" href="topics/configure.dita"/>
-  <keydef keys="settings" href="topics/settings.dita"/>
-  <keydef keys="troubleshooting" href="topics/troubleshooting.dita"/>
 </map>

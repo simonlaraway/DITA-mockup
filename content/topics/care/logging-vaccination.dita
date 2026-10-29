@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="logging-vaccination">
+  <title>Logging a vaccination</title>
+  <shortdesc>Record a vaccination so the animal's care plan and certificate stay up to
+    date.</shortdesc>
+  <taskbody>
+    <prereq><p>You need the <uicontrol>Vet staff</uicontrol> role, or the
+        <uicontrol>Staff</uicontrol> role for vaccines covered by a standing protocol.</p></prereq>
+    <steps>
+      <step conkeyref="reuse/step-open-animal"><cmd/></step>
+      <step><cmd>On the <uicontrol>Medical</uicontrol> tab, find the due vaccination in the care
+          plan and click <uicontrol>Record</uicontrol>.</cmd>
+        <info><p>For a vaccination that isn't in the care plan, click
+            <menucascade><uicontrol>Add</uicontrol><uicontrol>Vaccination</uicontrol></menucascade>
+            instead.</p></info></step>
+      <step><cmd>Scan the vial's barcode, or enter the product and lot number by hand.</cmd></step>
+      <step><cmd>Confirm the date, the route and who gave it.</cmd></step>
+      <step><cmd>Click <uicontrol>Save</uicontrol>.</cmd></step>
+    </steps>
+    <result><p>The vaccination is marked as given, and any booster is scheduled automatically.
+        The vaccination certificate on the <uicontrol>Documents</uicontrol> tab updates to include
+        it.</p></result>
+  </taskbody>
+</task>

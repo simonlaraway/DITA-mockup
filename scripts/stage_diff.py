@@ -461,7 +461,8 @@ STATUS_LABEL = {"added": "New page", "removed": "Removed page", "changed": "Chan
 
 
 def group_name(group):
-    return {"": "Site", "user": "User Guide", "admin": "Administrator Guide"}.get(group, group)
+    return {"": "Site", "user": "User Guide", "admin": "Administrator Guide",
+            "api": "API Guide"}.get(group, group)
 
 
 def changed_pages(ctx):

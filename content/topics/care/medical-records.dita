@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="medical-records">
+  <title>Medical records and care plans</title>
+  <shortdesc><ph keyref="product-name"/> keeps a medical history for every animal and builds a
+    care plan from your shelter's protocols, so nothing is missed.</shortdesc>
+  <conbody>
+    <p>When an animal is taken in, <ph keyref="product-name"/> applies your shelter's intake
+      protocol and creates a <term>care plan</term>: a list of vaccinations, treatments and
+      checks with due dates. Staff see what's due on the <wintitle>Today</wintitle> dashboard and
+      in the <ph keyref="mobile-app"/> app.</p>
+    <section>
+      <title>What a medical record contains</title>
+      <ul>
+        <li>Vaccinations, with product, lot number and who gave them</li>
+        <li>Treatments and prescriptions</li>
+        <li>Exams and test results, such as heartworm and FIV/FeLV</li>
+        <li>Weight history, charted over time</li>
+        <li>Surgeries, including spay and neuter</li>
+      </ul>
+    </section>
+    <section>
+      <title>Medical holds</title>
+      <p>A vet can place an animal on <uicontrol>Medical hold</uicontrol>. While the hold is in
+        place, the animal can't be listed for adoption or moved to a foster home. The hold ends
+        when a vet clears it.</p>
+    </section>
+  </conbody>
+</concept>

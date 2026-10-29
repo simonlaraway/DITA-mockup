@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="animal-object">
+  <title>The animal object</title>
+  <shortdesc>Fields returned for an animal by <codeph>GET /animals</codeph> and
+    <codeph>GET /animals/{id}</codeph>.</shortdesc>
+  <refbody>
+    <properties>
+      <prophead><proptypehd>Field</proptypehd><propvaluehd>Type</propvaluehd><propdeschd>Description</propdeschd></prophead>
+      <property><proptype><parmname>id</parmname></proptype><propvalue>string</propvalue><propdesc>Permanent animal ID, for example <codeph>CB-2026-00412</codeph>.</propdesc></property>
+      <property><proptype><parmname>name</parmname></proptype><propvalue>string</propvalue><propdesc>Current name.</propdesc></property>
+      <property><proptype><parmname>species</parmname></proptype><propvalue>enum</propvalue><propdesc><codeph>dog</codeph>, <codeph>cat</codeph>, <codeph>rabbit</codeph> or <codeph>other</codeph>.</propdesc></property>
+      <property><proptype><parmname>breeds</parmname></proptype><propvalue>string[]</propvalue><propdesc>Primary breed first. Empty for unknown.</propdesc></property>
+      <property><proptype><parmname>birth_date_estimate</parmname></proptype><propvalue>date</propvalue><propdesc>ISO 8601 date.</propdesc></property>
+      <property><proptype><parmname>size</parmname></proptype><propvalue>enum</propvalue><propdesc><codeph>xs</codeph> through <codeph>xl</codeph>.</propdesc></property>
+      <property><proptype><parmname>status</parmname></proptype><propvalue>enum</propvalue><propdesc>Current status, for example <codeph>available</codeph> or <codeph>adoption_pending</codeph>.</propdesc></property>
+      <property><proptype><parmname>kennel_id</parmname></proptype><propvalue>string | null</propvalue><propdesc>Current kennel. <codeph>null</codeph> if in foster or adopted.</propdesc></property>
+      <property><proptype><parmname>public_description</parmname></proptype><propvalue>string</propvalue><propdesc>Listing text, as Markdown.</propdesc></property>
+      <property><proptype><parmname>primary_photo_url</parmname></proptype><propvalue>string | null</propvalue><propdesc>URL of the first photo. URLs are signed and expire after 24 hours.</propdesc></property>
+      <property><proptype><parmname>updated_at</parmname></proptype><propvalue>datetime</propvalue><propdesc>ISO 8601 timestamp of the last change.</propdesc></property>
+    </properties>
+  </refbody>
+</reference>

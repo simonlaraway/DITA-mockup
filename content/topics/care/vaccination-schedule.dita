@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="vaccination-schedule">
+  <title>Default dog vaccination schedule</title>
+  <shortdesc>The schedule <ph keyref="product-name"/> uses to build care plans for dogs, unless
+    your shelter has customized it.</shortdesc>
+  <refbody>
+    <simpletable relcolwidth="2* 2* 3*">
+      <sthead><stentry>Vaccine</stentry><stentry>First dose</stentry><stentry>Boosters</stentry></sthead>
+      <strow><stentry>DHPP</stentry><stentry>At intake (from 6 weeks)</stentry><stentry>Every 2 weeks until 20 weeks old, then yearly</stentry></strow>
+      <strow><stentry>Bordetella</stentry><stentry>At intake</stentry><stentry>Yearly</stentry></strow>
+      <strow><stentry>Rabies</stentry><stentry>At 12 weeks or at intake if older</stentry><stentry>After 1 year, then every 3 years</stentry></strow>
+      <strow><stentry>Canine influenza (H3N2/H3N8)</stentry><stentry>At intake, if enabled</stentry><stentry>After 2–4 weeks, then yearly</stentry></strow>
+      <strow><stentry>Leptospirosis</stentry><stentry>From 12 weeks, if enabled</stentry><stentry>After 2–4 weeks, then yearly</stentry></strow>
+    </simpletable>
+    <section>
+      <title>Customizing the schedule</title>
+      <p>Schedules vary by region and veterinary guidance. Administrators can change this
+        schedule in <menucascade><uicontrol>Settings</uicontrol><uicontrol>Medical
+        protocols</uicontrol></menucascade>.</p>
+    </section>
+  </refbody>
+</reference>

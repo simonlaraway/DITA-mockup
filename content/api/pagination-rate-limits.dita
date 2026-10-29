@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="pagination-rate-limits">
+  <title>Pagination and rate limits</title>
+  <shortdesc>List endpoints return results in pages, and each API key can make a limited number
+    of requests per minute.</shortdesc>
+  <conbody>
+    <section>
+      <title>Pagination</title>
+      <p>List endpoints accept a <parmname>limit</parmname> (1–100, default 25) and return a
+        <codeph>next_cursor</codeph>. To get the next page, pass it back as
+        <parmname>cursor</parmname>. When <codeph>next_cursor</codeph> is <codeph>null</codeph>,
+        you've reached the end.</p>
+      <p>Cursors are stable: records added while you page through a list don't cause duplicates
+        or gaps.</p>
+    </section>
+    <section>
+      <title>Rate limits</title>
+      <p>Each key can make <ph keyref="rate-limit"/> requests per minute. Every response includes
+        these headers:</p>
+      <simpletable relcolwidth="1* 2*">
+        <sthead><stentry>Header</stentry><stentry>Meaning</stentry></sthead>
+        <strow><stentry><codeph>X-RateLimit-Limit</codeph></stentry><stentry>Requests allowed per minute</stentry></strow>
+        <strow><stentry><codeph>X-RateLimit-Remaining</codeph></stentry><stentry>Requests left in the current window</stentry></strow>
+        <strow><stentry><codeph>X-RateLimit-Reset</codeph></stentry><stentry>Unix time when the window resets</stentry></strow>
+      </simpletable>
+      <p>If you exceed the limit, you get a <codeph>429</codeph> response with a
+        <codeph>Retry-After</codeph> header. Wait that many seconds before retrying, and use
+        exponential backoff for repeated failures.</p>
+    </section>
+  </conbody>
+</concept>

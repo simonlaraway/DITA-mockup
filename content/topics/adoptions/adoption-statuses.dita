@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="adoption-statuses">
+  <title>Animal statuses</title>
+  <shortdesc>The statuses an animal can have. Statuses change automatically when you record
+    events.</shortdesc>
+  <refbody>
+    <properties>
+      <prophead><proptypehd>Status</proptypehd><propvaluehd>Listed?</propvaluehd><propdeschd>Set when</propdeschd></prophead>
+      <property><proptype>Intake</proptype><propvalue>No</propvalue><propdesc>A new record is created.</propdesc></property>
+      <property><proptype>Stray hold</proptype><propvalue>No</propvalue><propdesc>A stray intake is recorded. Ends after your region's hold period.</propdesc></property>
+      <property><proptype>Medical hold</proptype><propvalue>No</propvalue><propdesc>A vet places a hold.</propdesc></property>
+      <property><proptype>Available</proptype><propvalue>Yes</propvalue><propdesc>All holds have ended and the animal is marked ready.</propdesc></property>
+      <property><proptype>In foster</proptype><propvalue>Optional</propvalue><propdesc>A foster placement is finalized.</propdesc></property>
+      <property><proptype>Adoption pending</proptype><propvalue>Marked "pending"</propvalue><propdesc>An application is approved.</propdesc></property>
+      <property><proptype>Adopted</proptype><propvalue>No</propvalue><propdesc>An adoption is finalized.</propdesc></property>
+      <property><proptype>Transferred out</proptype><propvalue>No</propvalue><propdesc>The animal moves to a partner organization.</propdesc></property>
+      <property><proptype>Returned to owner</proptype><propvalue>No</propvalue><propdesc>A stray is reclaimed by its owner.</propdesc></property>
+    </properties>
+  </refbody>
+</reference>

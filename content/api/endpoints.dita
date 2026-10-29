@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="endpoints">
+  <title>Endpoints</title>
+  <shortdesc>All endpoints in API <ph keyref="api-version"/>. Paths are relative to
+    <codeph><ph keyref="api-base-url"/></codeph>.</shortdesc>
+  <refbody>
+    <simpletable relcolwidth="1* 3* 2* 3*">
+      <sthead><stentry>Method</stentry><stentry>Path</stentry><stentry>Scope</stentry><stentry>Description</stentry></sthead>
+      <strow><stentry>GET</stentry><stentry><codeph>/animals</codeph></stentry><stentry><codeph>animals:read</codeph></stentry><stentry>List animals. Filter by <parmname>species</parmname>, <parmname>status</parmname>, <parmname>site</parmname>.</stentry></strow>
+      <strow><stentry>GET</stentry><stentry><codeph>/animals/{id}</codeph></stentry><stentry><codeph>animals:read</codeph></stentry><stentry>Get one animal.</stentry></strow>
+      <strow><stentry>PATCH</stentry><stentry><codeph>/animals/{id}</codeph></stentry><stentry><codeph>animals:write</codeph></stentry><stentry>Update profile fields.</stentry></strow>
+      <strow><stentry>GET</stentry><stentry><codeph>/animals/{id}/photos</codeph></stentry><stentry><codeph>animals:read</codeph></stentry><stentry>List photo URLs in display order.</stentry></strow>
+      <strow><stentry>POST</stentry><stentry><codeph>/intakes</codeph></stentry><stentry><codeph>animals:write</codeph></stentry><stentry>Record an intake and create the animal.</stentry></strow>
+      <strow><stentry>GET</stentry><stentry><codeph>/kennels</codeph></stentry><stentry><codeph>animals:read</codeph></stentry><stentry>List kennels and their occupants.</stentry></strow>
+      <strow><stentry>GET</stentry><stentry><codeph>/adoptions</codeph></stentry><stentry><codeph>adoptions:read</codeph></stentry><stentry>List applications and adoptions.</stentry></strow>
+      <strow><stentry>POST</stentry><stentry><codeph>/adoptions</codeph></stentry><stentry><codeph>adoptions:write</codeph></stentry><stentry>Submit an application.</stentry></strow>
+      <strow><stentry>GET</stentry><stentry><codeph>/webhooks</codeph></stentry><stentry><codeph>webhooks:manage</codeph></stentry><stentry>List webhook subscriptions.</stentry></strow>
+      <strow><stentry>POST</stentry><stentry><codeph>/webhooks</codeph></stentry><stentry><codeph>webhooks:manage</codeph></stentry><stentry>Create a subscription.</stentry></strow>
+      <strow><stentry>DELETE</stentry><stentry><codeph>/webhooks/{id}</codeph></stentry><stentry><codeph>webhooks:manage</codeph></stentry><stentry>Delete a subscription.</stentry></strow>
+    </simpletable>
+  </refbody>
+</reference>

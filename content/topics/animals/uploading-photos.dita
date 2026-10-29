@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="uploading-photos">
+  <title>Uploading animal photos</title>
+  <shortdesc>Good photos are the biggest factor in how quickly an animal is adopted. Add them
+    from a computer or straight from your phone.</shortdesc>
+  <taskbody>
+    <context><p>Each animal can have up to 20 photos and 3 videos. The first photo is the
+        primary photo on listings and kennel cards.</p></context>
+    <steps>
+      <step conkeyref="reuse/step-open-animal"><cmd/></step>
+      <step platform="web"><cmd>On the <uicontrol>Profile</uicontrol> tab, drag photos onto the
+          photo strip, or click <uicontrol>Add photos</uicontrol>.</cmd></step>
+      <step platform="ios android"><cmd>In the <ph keyref="mobile-app"/> app, tap
+          <uicontrol>Camera</uicontrol> and take the photo. It uploads automatically, even if
+          you're offline when you take it.</cmd></step>
+      <step><cmd>Drag the best photo to the first position to make it the primary photo.</cmd></step>
+      <step><cmd>Optional: click a photo and add a caption.</cmd>
+        <info><p>Captions are read aloud by screen readers on your public listings, so describe
+            what's in the photo.</p></info></step>
+    </steps>
+    <result><p>New photos appear on public listings within 15 minutes.</p></result>
+  </taskbody>
+</task>

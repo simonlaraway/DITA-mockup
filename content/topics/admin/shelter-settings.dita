@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="shelter-settings">
+  <title>Shelter settings</title>
+  <shortdesc>Organization-wide settings in <menucascade><uicontrol>Settings</uicontrol><uicontrol>Shelter</uicontrol></menucascade>.
+    Changes apply to every user immediately.</shortdesc>
+  <refbody>
+    <properties>
+      <prophead><proptypehd>Setting</proptypehd><propvaluehd>Default</propvaluehd><propdeschd>Description</propdeschd></prophead>
+      <property><proptype>Shelter name and logo</proptype><propvalue>From sign-up</propvalue><propdesc>Shown on listings, contracts and emails.</propdesc></property>
+      <property><proptype>Time zone</proptype><propvalue>From sign-up</propvalue><propdesc>Used for due dates, shifts and reports.</propdesc></property>
+      <property><proptype>Stray hold period</proptype><propvalue>72 hours</propvalue><propdesc>How long strays stay on hold before becoming available. Set this to match local law.</propdesc></property>
+      <property><proptype>Animal ID prefix</proptype><propvalue><codeph>CB</codeph></propvalue><propdesc>2–4 letters. Applies to new animals only.</propdesc></property>
+      <property><proptype>Adoption fee defaults</proptype><propvalue>None</propvalue><propdesc>Default fees by species and age group. Staff can override them per adoption.</propdesc></property>
+      <property><proptype>Require two-step verification</proptype><propvalue>On</propvalue><propdesc>Recommended. Turning it off requires the Owner role.</propdesc></property>
+      <property><proptype>Session timeout</proptype><propvalue>12 hours</propvalue><propdesc>Shorten this for shared front-desk computers.</propdesc></property>
+      <property><proptype>Data retention for declined applications</proptype><propvalue>12 months</propvalue><propdesc>Personal data in declined applications is deleted after this period.</propdesc></property>
+    </properties>
+  </refbody>
+</reference>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="managing-users">
+  <title>Inviting and removing users</title>
+  <shortdesc>Give staff and volunteers access to <ph keyref="product-name"/>, change their roles,
+    and remove access when they leave.</shortdesc>
+  <taskbody>
+    <prereq><note conkeyref="reuse/note-admin-only"/></prereq>
+    <steps>
+      <step><cmd>Open <menucascade><uicontrol>Settings</uicontrol><uicontrol>Users</uicontrol></menucascade>.</cmd></step>
+      <step><cmd>Click <uicontrol>Invite users</uicontrol> and enter one or more email
+          addresses.</cmd>
+        <info><p>To invite many volunteers at once, paste a list of addresses, one per
+            line.</p></info></step>
+      <step><cmd>Choose a role for the new users, and optionally limit them to one site.</cmd></step>
+      <step><cmd>Click <uicontrol>Send invitations</uicontrol>.</cmd></step>
+    </steps>
+    <result><p>Invited users appear with status <uicontrol>Pending</uicontrol> until they accept.</p></result>
+    <postreq>
+      <p>To remove a user, open their profile and click <uicontrol>Deactivate</uicontrol>. They're
+        signed out everywhere immediately. Their name stays on the records they created, so your
+        history remains intact. Deactivated users don't count toward your plan's user limit.</p>
+    </postreq>
+  </taskbody>
+</task>

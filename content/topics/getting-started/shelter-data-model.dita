@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="shelter-data-model">
+  <title>How <ph keyref="product-name"/> organizes shelter data</title>
+  <shortdesc>Everything in <ph keyref="product-name"/> connects to a small set of records:
+    animals, people, locations and events. Knowing how they relate makes the rest of the app
+    easier to navigate.</shortdesc>
+  <conbody>
+    <dl>
+      <dlentry>
+        <dt>Animal</dt>
+        <dd>The central record. Each animal gets a permanent ID such as
+          <codeph>CB-2026-00412</codeph> at intake, and that ID never changes, even if the animal
+          is adopted and later returned.</dd>
+      </dlentry>
+      <dlentry>
+        <dt>Person</dt>
+        <dd>Anyone outside your team who interacts with an animal: adopters, fosters, finders and
+          surrendering owners. One person can have many roles over time.</dd>
+      </dlentry>
+      <dlentry>
+        <dt>Location</dt>
+        <dd>Where an animal is right now: a kennel, a foster home, a partner clinic or an offsite
+          adoption event. Locations belong to a <term>site</term> if your organization runs more
+          than one facility.</dd>
+      </dlentry>
+      <dlentry>
+        <dt>Event</dt>
+        <dd>Anything that happens to an animal: intake, a vaccination, a move, an application, an
+          adoption. Events are append-only, so every record has a complete, auditable
+          timeline.</dd>
+      </dlentry>
+    </dl>
+    <section>
+      <title>Status is derived from events</title>
+      <p>You never edit an animal's status directly. Recording an event, such as approving an
+        adoption, moves the animal to the right status automatically. This keeps reports accurate
+        and makes every status change traceable to a person and a time.</p>
+    </section>
+  </conbody>
+</concept>

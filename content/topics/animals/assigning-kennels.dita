@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="assigning-kennels">
+  <title>Assigning an animal to a kennel</title>
+  <shortdesc>Move an animal into a kennel, or between kennels, so everyone knows where to find
+    them.</shortdesc>
+  <taskbody>
+    <steps>
+      <step conkeyref="reuse/step-open-animal"><cmd/></step>
+      <step><cmd>Click <uicontrol>Move</uicontrol>.</cmd></step>
+      <step><cmd>Select a kennel on the map. Available kennels are green; kennels with a
+          compatibility warning are amber.</cmd>
+        <info><p>Hover over an amber kennel to see the warning, for example "Neighbor is
+            reactive to large dogs".</p></info></step>
+      <step><cmd>Click <uicontrol>Confirm move</uicontrol>.</cmd></step>
+    </steps>
+    <result><p>The move is added to the animal's timeline, and the kennel card is ready to
+        print from <uicontrol>Print card</uicontrol>.</p></result>
+    <postreq><p>To house two animals together, move the second animal into the same kennel and
+        select <uicontrol>Co-house</uicontrol> when prompted.</p></postreq>
+  </taskbody>
+</task>

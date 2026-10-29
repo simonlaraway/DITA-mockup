@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="animal-fields">
+  <title>Animal record fields</title>
+  <shortdesc>Fields on the <uicontrol>Profile</uicontrol> tab of an animal record, and where
+    each one appears.</shortdesc>
+  <refbody>
+    <properties>
+      <prophead><proptypehd>Field</proptypehd><propvaluehd>Format</propvaluehd><propdeschd>Notes</propdeschd></prophead>
+      <property><proptype>Animal ID</proptype><propvalue><codeph>CB-YYYY-NNNNN</codeph></propvalue><propdesc>Assigned at intake. Read-only.</propdesc></property>
+      <property><proptype>Name</proptype><propvalue>Text, 60 characters</propvalue><propdesc>Shown on kennel cards and listings.</propdesc></property>
+      <property><proptype>Species</proptype><propvalue>Dog, Cat, Rabbit, Other</propvalue><propdesc>Controls which vaccination schedule applies.</propdesc></property>
+      <property><proptype>Breed</proptype><propvalue>Primary and secondary</propvalue><propdesc>Choose from the list, or select <uicontrol>Mixed</uicontrol>.</propdesc></property>
+      <property><proptype>Estimated birth date</proptype><propvalue>Date</propvalue><propdesc>Age is calculated from this. Use the 1st of the month if unsure.</propdesc></property>
+      <property><proptype>Size</proptype><propvalue>XS, S, M, L, XL</propvalue><propdesc>Based on adult weight.</propdesc></property>
+      <property><proptype>Microchip</proptype><propvalue>9, 10 or 15 digits</propvalue><propdesc>Checked against the registry when saved.</propdesc></property>
+      <property><proptype>Altered</proptype><propvalue>Yes, No, Unknown</propvalue><propdesc>Spayed or neutered. Required before adoption in most regions.</propdesc></property>
+      <property><proptype>Public description</proptype><propvalue>Rich text</propvalue><propdesc>Published on adoption listings. Write it for adopters.</propdesc></property>
+      <property audience="admin"><proptype>Internal cost code</proptype><propvalue>Text</propvalue><propdesc>Used in cost reports. Defaults from shelter settings.</propdesc></property>
+    </properties>
+  </refbody>
+</reference>

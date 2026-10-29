@@ -6,15 +6,30 @@
   <title>Reusable content</title>
   <taskbody>
     <prereq>
-      <note id="warn-power" type="warning">Disconnect the <ph keyref="product-name"/> from power
-        before you open the housing.</note>
-      <note id="note-backup" type="tip">Export your configuration before you upgrade so you can
-        roll back if needed.</note>
-      <p id="contact-support">If the problem persists, contact <xref keyref="support-url"/>.</p>
+      <note id="note-admin-only" type="note">Only users with the <uicontrol>Shelter
+        administrator</uicontrol> or <uicontrol>Owner</uicontrol> role can do this.</note>
+      <note id="note-pii" type="important">Adopter and foster records contain personal
+        information. Share them only with staff who need them, and never export them to personal
+        devices.</note>
+      <note id="note-autosave" type="tip"><ph keyref="product-name"/> saves your changes as you
+        type. The <uicontrol>Saved</uicontrol> indicator in the top bar confirms each save.</note>
+      <note id="warn-api-key" type="warning">An API key has the same access as the user who
+        created it. Store keys in a secrets manager, never in source code or client-side
+        apps.</note>
+      <note id="note-sandbox" type="tip">Every account includes a sandbox shelter with sample
+        animals. Use a sandbox key (prefix <codeph>cb_test_</codeph>) while you build and test
+        your integration.</note>
+      <p id="contact-support">If you still need help, contact <xref keyref="support-url"/> or email
+        <ph keyref="support-email"/>. Check <xref keyref="status-url"/> for service
+        incidents.</p>
     </prereq>
     <steps>
-      <step id="step-restart">
-        <cmd>Restart the <ph keyref="product-name"/> service.</cmd>
+      <step id="step-signin">
+        <cmd>Sign in to <ph keyref="product-name"/> at <xref keyref="app-url"/>.</cmd>
+      </step>
+      <step id="step-open-animal">
+        <cmd>Open the animal's record: press <userinput>/</userinput>, type the animal's name or
+          ID, and select it from the results.</cmd>
       </step>
     </steps>
   </taskbody>
