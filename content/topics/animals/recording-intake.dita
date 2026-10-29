@@ -26,7 +26,7 @@
       <step><cmd>Enter the microchip number, or select <uicontrol>No chip found</uicontrol>.</cmd>
         <stepresult><p>If the chip matches an existing record, <ph keyref="product-name"/> offers
             to open it.</p></stepresult></step>
-      <step><cmd>Fill in the animal's name, species, breed, sex, estimated age and weight.</cmd>
+      <step><cmd>Fill in the animal's name, species, breed, sex, estimated age, weight and coat color.</cmd>
         <info><p>If the animal has no name, leave the field blank; <ph keyref="product-name"/>
             assigns a temporary one, like "Intake 0412", that you can change later.</p></info></step>
       <step><cmd>Click <uicontrol>Create record</uicontrol>.</cmd></step>
