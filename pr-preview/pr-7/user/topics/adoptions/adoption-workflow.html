@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="copyright" content="(C) Copyright 2026"><meta name="generator" content="DITA-OT"><meta name="description" content="Adoptions in CorgiBase move through four stages, from application to going home. Each stage is recorded on both the animal's and the adopter's timeline."><title>How adoptions work</title><link rel="stylesheet" type="text/css" href="../../css/commonltr.css"><link rel="stylesheet" type="text/css" href="../../css/custom.css"><style>/* Staging preview: change highlighting. Inlined into every staged page by scripts/stage_diff.py. */
+:root {
+  --diff-add: #1a7f37;  --diff-add-bg: #e6ffec;  --diff-ins-bg: #abf2bc;
+  --diff-chg: #0969da;  --diff-chg-bg: #ddf4ff;
+  --diff-del: #cf222e;  --diff-del-bg: #ffebe9;  --diff-delw-bg: #ffcecb;
+}
+
+/* Banner */
+.staging-banner {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1rem;
+  grid-column: 1 / -1; margin: 0 0 1rem; padding: .6rem 1rem;
+  background: #1f2430; color: #fff; font-size: .9rem;
+}
+main > .staging-banner { margin: -2rem -3rem 1.5rem; padding: .6rem 3rem; }
+.staging-banner a { color: #9ec1ff; }
+.staging-tag { background: #ffb020; color: #1f2430; font-weight: 700; padding: .1rem .5rem; border-radius: 3px; }
+.staging-links { margin-left: auto; }
+.staging-banner button {
+  background: #3a4252; color: #fff; border: 0; border-radius: 3px; padding: .15rem .55rem; cursor: pointer;
+}
+.staging-banner button:hover { background: #4d5770; }
+
+/* Blocks. Backgrounds are !important so they win over DITAVAL flag colors (inline styles);
+   the [Admin] label still shows which items are admin-only. */
+.diff-added, .diff-changed, .diff-removed { border-radius: 3px; padding-left: .5rem; scroll-margin-top: 4rem; }
+.diff-added   { background: var(--diff-add-bg) !important; box-shadow: inset 4px 0 0 var(--diff-add); }
+.diff-changed { background: var(--diff-chg-bg) !important; box-shadow: inset 4px 0 0 var(--diff-chg); }
+.diff-removed { background: var(--diff-del-bg) !important; box-shadow: inset 4px 0 0 var(--diff-del);
+                text-decoration: line-through; text-decoration-color: var(--diff-del); opacity: .85; }
+tr.diff-added > *   { background: var(--diff-add-bg); }
+tr.diff-changed > * { background: var(--diff-chg-bg); }
+tr.diff-removed > * { background: var(--diff-del-bg); text-decoration: line-through; }
+.diff-current { outline: 2px solid #2f5bd3; outline-offset: 2px; }
+
+/* Words inside a changed block */
+.diff-changed ins { background: var(--diff-ins-bg); text-decoration: none; border-radius: 2px; }
+.diff-changed del { background: var(--diff-delw-bg); color: #82071e; border-radius: 2px; }
+
+/* Whole pages */
+.diff-page-added   { box-shadow: inset 4px 0 0 var(--diff-add); }
+.diff-page-removed { box-shadow: inset 4px 0 0 var(--diff-del); }
+.diff-page-removed article { text-decoration: line-through; text-decoration-color: var(--diff-del); opacity: .8; }
+
+/* TOC markers */
+li.diff-toc-changed > a::after { content: " \25CF"; color: var(--diff-chg); }
+li.diff-toc-added > a::after {
+  content: "new"; margin-left: .4rem; padding: 0 .35rem; border-radius: 3px;
+  font-size: .7rem; font-weight: 700; color: #fff; background: var(--diff-add); vertical-align: middle;
+}
+
+/* Summary page (changes.html) */
+body.staging-summary { display: block; }
+body.staging-summary main { margin: 0 auto; }
+.summary-added td:nth-child(2)   { color: var(--diff-add); font-weight: 600; }
+.summary-changed td:nth-child(2) { color: var(--diff-chg); font-weight: 600; }
+.summary-removed td:nth-child(2) { color: var(--diff-del); font-weight: 600; }
+
+@media (max-width: 760px) {
+  main > .staging-banner { margin: -1.5rem -1rem 1rem; padding: .6rem 1rem; }
+}
+/* Staging review widget. Inlined into staged pages by scripts/stage_diff.py with --review-config. */
+.rw-ui[hidden] { display: none !important; }
+.rw-ui { font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+
+/* Hover target and the gutter button */
+.rw-hover  { outline: 1px dashed #8c959f; outline-offset: 3px; border-radius: 3px; }
+.rw-active { outline: 2px solid #8250df; outline-offset: 3px; border-radius: 3px; }
+.rw-gutter, .rw-selbtn {
+  position: absolute; z-index: 30; border: 1px solid #d0d7de; background: #fff; cursor: pointer;
+  border-radius: 6px; box-shadow: 0 1px 3px rgba(31, 36, 48, .15);
+}
+.rw-gutter { width: 28px; height: 28px; padding: 0; font-size: 14px; }
+.rw-selbtn { padding: .25rem .6rem; font-size: 13px; font-weight: 600; color: #8250df; }
+.rw-gutter:hover, .rw-selbtn:hover { border-color: #8250df; }
+
+/* Side panel */
+.rw-panel {
+  position: fixed; z-index: 40; top: 0; right: 0; bottom: 0; width: min(380px, 100vw);
+  background: #fff; border-left: 1px solid #d0d7de; box-shadow: -6px 0 18px rgba(31, 36, 48, .12);
+  padding: 1rem 1.1rem; overflow-y: auto; transform: translateX(105%); transition: transform .18s ease;
+  display: flex; flex-direction: column; gap: .7rem; color: #1f2430;
+}
+.rw-panel.rw-open { transform: none; }
+.rw-head { display: flex; align-items: center; justify-content: space-between; }
+.rw-x { border: 0; background: none; font-size: 22px; line-height: 1; cursor: pointer; color: #57606a; }
+.rw-src { font-family: ui-monospace, Menlo, monospace; font-size: 12.5px; word-break: break-all; }
+.rw-src a { color: #0969da; }
+.rw-reuse { margin: 0; padding: .45rem .6rem; background: #fff8c5; border-radius: 6px; font-size: 13px; }
+.rw-quote { margin: 0; padding: .3rem .7rem; border-left: 3px solid #d0d7de; color: #57606a; font-size: 13px; }
+.rw-panel textarea, .rw-panel input {
+  width: 100%; box-sizing: border-box; border: 1px solid #d0d7de; border-radius: 6px;
+  padding: .5rem .6rem; font: inherit; resize: vertical;
+}
+.rw-panel textarea:focus, .rw-panel input:focus { outline: 2px solid #8250df; border-color: transparent; }
+.rw-where, .rw-fine, .rw-account { margin: 0; font-size: 12.5px; color: #57606a; }
+.rw-steps { margin: 0; padding-left: 1.2rem; font-size: 13px; }
+.rw-actions { display: flex; justify-content: flex-end; gap: .5rem; }
+.rw-actions button {
+  border: 1px solid #d0d7de; background: #f6f8fa; border-radius: 6px; padding: .35rem .9rem;
+  font: inherit; cursor: pointer;
+}
+.rw-actions .rw-primary { background: #8250df; border-color: #8250df; color: #fff; font-weight: 600; }
+.rw-actions button:disabled { opacity: .6; cursor: default; }
+.rw-link { border: 0; background: none; padding: 0; color: #0969da; cursor: pointer; font: inherit; }
+
+/* Badges for existing comments */
+.rw-badge {
+  float: right; margin: 0 0 .2rem .6rem; border: 1px solid #c8b5f5; background: #f5f0ff; color: #6639ba;
+  border-radius: 999px; padding: 0 .5rem; font-size: 12px; font-weight: 600; cursor: pointer;
+  text-decoration: none; position: relative; z-index: 5;
+}
+.rw-orphans {
+  border: 0; border-radius: 3px; background: #c8b5f5; color: #1f2430; font-weight: 600;
+  padding: .1rem .5rem; cursor: pointer;
+}
+.rw-thread {
+  position: absolute; z-index: 45; width: min(360px, calc(100vw - 32px)); max-height: 60vh; overflow-y: auto;
+  background: #fff; border: 1px solid #d0d7de; border-radius: 8px; padding: .7rem .9rem;
+  box-shadow: 0 8px 24px rgba(31, 36, 48, .18); color: #1f2430;
+}
+.rw-comment { border-top: 1px solid #eaeef2; padding: .5rem 0; }
+.rw-meta { font-size: 12px; color: #57606a; }
+.rw-meta a { color: #0969da; }
+.rw-text { white-space: pre-wrap; font-size: 13.5px; margin-top: .2rem; }
+
+/* Toast */
+.rw-toast {
+  position: fixed; z-index: 50; left: 50%; bottom: 1.2rem; transform: translateX(-50%);
+  background: #1f2430; color: #fff; padding: .55rem 1rem; border-radius: 8px; font-size: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .25);
+}
+.rw-toast a { color: #c8b5f5; }
+.rw-toast.rw-error { background: #82071e; }
+</style></head><body id="adoption-workflow"><nav class="toc" role="navigation"><ul><li><span>Getting started</span><ul><li><a href="../../topics/getting-started/about-corgibase.html">About CorgiBase</a></li><li><a href="../../topics/getting-started/shelter-data-model.html">How CorgiBase organizes shelter data</a></li><li><a href="../../topics/getting-started/signing-in.html">Signing in for the first time</a></li><li><a href="../../topics/getting-started/roles-permissions.html">Roles and permissions</a></li></ul></li><li><span>Animals</span><ul><li><a href="../../topics/animals/animal-records.html">Animal records</a><ul><li><a href="../../topics/animals/recording-intake.html">Recording an animal intake</a></li><li><a href="../../topics/animals/uploading-photos.html">Uploading animal photos</a></li><li><a href="../../topics/animals/assigning-kennels.html">Assigning an animal to a kennel</a></li><li><a href="../../topics/animals/animal-fields.html">Animal record fields</a></li></ul></li></ul></li><li><span>Medical care</span><ul><li><a href="../../topics/care/medical-records.html">Medical records and care plans</a><ul><li><a href="../../topics/care/logging-vaccination.html">Logging a vaccination</a></li><li><a href="../../topics/care/vaccination-schedule.html">Default dog vaccination schedule</a></li></ul></li></ul></li><li><span>Adoptions</span><ul><li><a href="../../topics/adoptions/adoption-workflow.html">How adoptions work</a><ul><li><a href="../../topics/adoptions/processing-application.html">Processing an adoption application</a></li><li><a href="../../topics/adoptions/publishing-listings.html">Publishing adoptable animals to your website</a></li><li><a href="../../topics/adoptions/adoption-statuses.html">Animal statuses</a></li></ul></li></ul></li><li><span>Volunteers</span><ul><li><a href="../../topics/volunteers/volunteer-shifts.html">Scheduling volunteer shifts</a></li></ul></li><li><span>Help</span><ul><li><a href="../../topics/help/keyboard-shortcuts.html">Keyboard shortcuts</a></li><li><a href="../../topics/help/faq.html">Frequently asked questions</a></li></ul></li></ul></nav><main role="main"><div class="staging-banner" role="note"><span class="staging-tag">Staging · PR #7</span><span>No changes on this page</span><span class="staging-links"><a href="../../../changes.html">All changes</a> · <a href="https://simonlaraway.github.io/DITA-mockup/user/topics/adoptions/adoption-workflow.html">Production page</a></span></div><article role="article" aria-labelledby="ariaid-title1">
+  <h1 class="title" id="ariaid-title1" data-src="content/topics/adoptions/adoption-workflow.dita:4:10">How adoptions work</h1>
+  
+  <div class="body conbody" data-src="content/topics/adoptions/adoption-workflow.dita:8:12"><p class="shortdesc" data-src="content/topics/adoptions/adoption-workflow.dita:5:14">Adoptions in <span class="ph" data-src="content/topics/adoptions/adoption-workflow.dita:5:54">CorgiBase</span> move through four stages, from
+    application to going home. Each stage is recorded on both the animal's and the adopter's
+    timeline.</p>
+    <ol class="ol" data-src="content/topics/adoptions/adoption-workflow.dita:9:9">
+      <li class="li" data-src="content/topics/adoptions/adoption-workflow.dita:10:11"><strong class="ph b" data-src="content/topics/adoptions/adoption-workflow.dita:10:14">Apply.</strong> An adopter applies through your website's listing or at the front desk.
+        Applications appear under <span class="ph uicontrol" data-src="content/topics/adoptions/adoption-workflow.dita:11:46">Adoptions</span> with status
+        <span class="ph uicontrol" data-src="content/topics/adoptions/adoption-workflow.dita:12:20">New</span>.</li>
+      <li class="li" data-src="content/topics/adoptions/adoption-workflow.dita:13:11"><strong class="ph b" data-src="content/topics/adoptions/adoption-workflow.dita:13:14">Review.</strong> Staff check references and landlord approval, and can request a
+        meet-and-greet. Teammates can comment on the application.</li>
+      <li class="li" data-src="content/topics/adoptions/adoption-workflow.dita:15:11"><strong class="ph b" data-src="content/topics/adoptions/adoption-workflow.dita:15:14">Approve.</strong> An approved application puts the animal on <span class="ph uicontrol" data-src="content/topics/adoptions/adoption-workflow.dita:15:81">Adoption
+        pending</span>, and other applications for that animal are waitlisted.</li>
+      <li class="li" data-src="content/topics/adoptions/adoption-workflow.dita:17:11"><strong class="ph b" data-src="content/topics/adoptions/adoption-workflow.dita:17:14">Finalize.</strong> The adopter signs the contract on a tablet or by email, pays the fee,
+        and the animal's status changes to <span class="ph uicontrol" data-src="content/topics/adoptions/adoption-workflow.dita:18:55">Adopted</span>.</li>
+    </ol>
+    <div class="note" data-src="content/shared/reuse.dita:11:44"><span class="note__title">Important:</span> <div class="note__body">Adopter and foster records contain personal
+        information. Share them only with staff who need them, and never export them to personal
+        devices.</div></div>
+    <section class="section" data-src="content/topics/adoptions/adoption-workflow.dita:21:14"><h2 class="title" data-src="content/topics/adoptions/adoption-workflow.dita:22:14">Fosters</h2>
+      
+      <p class="p" data-src="content/topics/adoptions/adoption-workflow.dita:23:10">Foster placements use the same workflow, with a foster agreement in place of an adoption
+        contract. A foster animal stays available for adoption unless you turn off
+        <span class="ph uicontrol" data-src="content/topics/adoptions/adoption-workflow.dita:25:20">List while in foster</span>.</p>
+    </section>
+  </div>
+<nav role="navigation" class="related-links"><ul class="ullinks"><li class="link" data-src="content/shelter-guide.ditamap:58:50"><strong><a href="processing-application.html">Processing an adoption application</a></strong><br>Review an application, approve or decline it, and finalize the adoption.</li><li class="link" data-src="content/shelter-guide.ditamap:59:47"><strong><a href="publishing-listings.html">Publishing adoptable animals to your website</a></strong><br>Show your available animals on your own website, and let adopters apply online.</li><li class="link" data-src="content/shelter-guide.ditamap:60:45"><strong><a href="adoption-statuses.html">Animal statuses</a></strong><br>The statuses an animal can have. Statuses change automatically when you record     events.</li></ul><div class="linklist reltasks"><strong>Related tasks</strong><br><ul class="linklist"><li class="linklist"><a class="link" href="processing-application.html" title="Review an application, approve or decline it, and finalize the adoption." data-src="content/shelter-guide.ditamap:97:59">Processing an adoption application</a></li></ul></div><div class="linklist relref"><strong>Related reference</strong><br><ul class="linklist"><li class="linklist"><a class="link" href="adoption-statuses.html" title="The statuses an animal can have. Statuses change automatically when you record events." data-src="content/shelter-guide.ditamap:98:54">Animal statuses</a></li></ul></div></nav></article></main><script>
+(function () {
+  var marks = document.querySelectorAll('.diff-anchor'), cur = -1;
+  function go(step) {
+    if (!marks.length) return;
+    cur = (cur + step + marks.length) % marks.length;
+    var el = marks[cur].parentElement;
+    el.scrollIntoView({behavior: 'smooth', block: 'center'});
+    document.querySelectorAll('.diff-current').forEach(function (e) { e.classList.remove('diff-current'); });
+    el.classList.add('diff-current');
+  }
+  document.querySelectorAll('[data-diff-step]').forEach(function (b) {
+    b.addEventListener('click', function () { go(+b.getAttribute('data-diff-step')); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.target.closest && e.target.closest('input,textarea')) return;
+    if (e.key === 'n') go(1); else if (e.key === 'p') go(-1);
+  });
+})();
+</script><script type="application/json" id="review-config">{"repo": "simonlaraway/DITA-mockup", "pr": 7, "head_sha": "4f176e51c9ff5bf78a165c6507211c06f341e3c8", "preview_url": "https://simonlaraway.github.io/DITA-mockup/pr-preview/pr-7/", "files": {}, "page": "user/topics/adoptions/adoption-workflow.html", "page_title": "How adoptions work", "page_status": "unchanged", "topic_src": "content/topics/adoptions/adoption-workflow.dita"}</script><script src="../../../review-widget.js"></script></body></html>
