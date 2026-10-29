@@ -1,7 +1,7 @@
 <!DOCTYPE html
   SYSTEM "about:legacy-compat">
 <html lang="en"><head><meta charset="UTF-8"><meta name="copyright" content="(C) Copyright 2026"><meta name="generator" content="DITA-OT"><meta name="description" content="The CorgiBase REST API lets you read and update your shelter's data from your own code: sync adoptable animals to your website, feed a dashboard, or connect a partner system."><title>About the CorgiBase API</title><link rel="stylesheet" type="text/css" href="../css/commonltr.css"><link rel="stylesheet" type="text/css" href="../css/custom.css"></head><body id="api-overview"><nav class="toc" role="navigation"><ul><li><a href="../api/api-overview.html">About the CorgiBase API</a><ul><li><a href="../api/creating-api-key.html">Creating an API key</a></li><li><a href="../api/first-request.html">Making your first request</a></li></ul></li><li><a href="../api/pagination-rate-limits.html">Pagination and rate limits</a></li><li><a href="../api/subscribing-webhooks.html">Subscribing to webhooks</a></li><li><span>Reference</span><ul><li><a href="../api/endpoints.html">Endpoints</a></li><li><a href="../api/animal-object.html">The animal object</a></li><li><a href="../api/errors.html">Errors</a></li></ul></li></ul></nav><main role="main"><article role="article" aria-labelledby="ariaid-title1">
-  <h1 class="title topictitle1" id="ariaid-title1">About the <span class="ph">CorgiBase</span> API</h1>
+  <h1 class="title" id="ariaid-title1">About the <span class="ph">CorgiBase</span> API</h1>
   
   <div class="body conbody"><p class="shortdesc">The <span class="ph">CorgiBase</span> REST API lets you read and update your shelter's
     data from your own code: sync adoptable animals to your website, feed a dashboard, or
@@ -9,7 +9,7 @@
     <p class="p">The API is organized around resources such as animals, kennels, intakes and adoptions. It
       accepts and returns JSON, uses standard HTTP methods and status codes, and authenticates
       with API keys.</p>
-    <section class="section"><h2 class="title sectiontitle">Base URL and versioning</h2>
+    <section class="section"><h2 class="title">Base URL and versioning</h2>
       
       <p class="p">All requests go to:</p>
       <pre class="pre codeblock"><code><span class="ph">https://api.corgibase.example/v2</span></code></pre>
@@ -18,19 +18,19 @@
         Breaking changes only ship in a new version, and old versions are supported for at least
         12 months after a new one is released.</p>
     </section>
-    <section class="section"><h2 class="title sectiontitle">Live and sandbox data</h2>
+    <section class="section"><h2 class="title">Live and sandbox data</h2>
       
       <p class="p">Keys starting with <code class="ph codeph">cb_live_</code> act on your real shelter. Keys starting with
         <code class="ph codeph">cb_test_</code> act on a sandbox shelter with sample animals that you can
         change freely.</p>
-      <div class="note tip note_tip"><span class="note__title">Tip:</span> <div class="note__body">Every account includes a sandbox shelter with sample
+      <div class="note"><span class="note__title">Tip:</span> <div class="note__body">Every account includes a sandbox shelter with sample
         animals. Use a sandbox key (prefix <code class="ph codeph">cb_test_</code>) while you build and test
         your integration.</div></div>
     </section>
-    <section class="section"><h2 class="title sectiontitle">Plan requirements</h2>
+    <section class="section"><h2 class="title">Plan requirements</h2>
       
       <p class="p">The Rescue plan includes read-only API access. Shelter and Network plans include full
         read and write access.</p>
     </section>
   </div>
-<nav role="navigation" class="related-links"><ul class="ullinks"><li class="link ulchildlink"><strong><a href="creating-api-key.html">Creating an API key</a></strong><br>Create a key to authenticate your API requests. Each key is limited to the scopes     you choose.</li><li class="link ulchildlink"><strong><a href="first-request.html">Making your first request</a></strong><br>List the adoptable dogs in your sandbox shelter, then fetch one of them.</li></ul></nav></article></main></body></html>
+<nav role="navigation" class="related-links"><ul class="ullinks"><li class="link"><strong><a href="creating-api-key.html">Creating an API key</a></strong><br>Create a key to authenticate your API requests. Each key is limited to the scopes     you choose.</li><li class="link"><strong><a href="first-request.html">Making your first request</a></strong><br>List the adoptable dogs in your sandbox shelter, then fetch one of them.</li></ul></nav></article></main></body></html>

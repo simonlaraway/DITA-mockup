@@ -1,11 +1,11 @@
 <!DOCTYPE html
   SYSTEM "about:legacy-compat">
 <html lang="en"><head><meta charset="UTF-8"><meta name="copyright" content="(C) Copyright 2026"><meta name="generator" content="DITA-OT"><meta name="description" content="List endpoints return results in pages, and each API key can make a limited number of requests per minute."><title>Pagination and rate limits</title><link rel="stylesheet" type="text/css" href="../css/commonltr.css"><link rel="stylesheet" type="text/css" href="../css/custom.css"></head><body id="pagination-rate-limits"><nav class="toc" role="navigation"><ul><li><a href="../api/api-overview.html">About the CorgiBase API</a><ul><li><a href="../api/creating-api-key.html">Creating an API key</a></li><li><a href="../api/first-request.html">Making your first request</a></li></ul></li><li><a href="../api/pagination-rate-limits.html">Pagination and rate limits</a></li><li><a href="../api/subscribing-webhooks.html">Subscribing to webhooks</a></li><li><span>Reference</span><ul><li><a href="../api/endpoints.html">Endpoints</a></li><li><a href="../api/animal-object.html">The animal object</a></li><li><a href="../api/errors.html">Errors</a></li></ul></li></ul></nav><main role="main"><article role="article" aria-labelledby="ariaid-title1">
-  <h1 class="title topictitle1" id="ariaid-title1">Pagination and rate limits</h1>
+  <h1 class="title" id="ariaid-title1">Pagination and rate limits</h1>
   
   <div class="body conbody"><p class="shortdesc">List endpoints return results in pages, and each API key can make a limited number
     of requests per minute.</p>
-    <section class="section"><h2 class="title sectiontitle">Pagination</h2>
+    <section class="section"><h2 class="title">Pagination</h2>
       
       <p class="p">List endpoints accept a <span class="keyword parmname">limit</span> (1–100, default 25) and return a
         <code class="ph codeph">next_cursor</code>. To get the next page, pass it back as
@@ -14,7 +14,7 @@
       <p class="p">Cursors are stable: records added while you page through a list don't cause duplicates
         or gaps.</p>
     </section>
-    <section class="section"><h2 class="title sectiontitle">Rate limits</h2>
+    <section class="section"><h2 class="title">Rate limits</h2>
       
       <p class="p">Each key can make <span class="ph">600</span> requests per minute. Every response includes
         these headers:</p>

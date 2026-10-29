@@ -1,37 +1,37 @@
 <!DOCTYPE html
   SYSTEM "about:legacy-compat">
 <html lang="en"><head><meta charset="UTF-8"><meta name="copyright" content="(C) Copyright 2026"><meta name="generator" content="DITA-OT"><meta name="description" content="Everything in CorgiBase connects to a small set of records: animals, people, locations and events. Knowing how they relate makes the rest of the app easier to navigate."><title>How CorgiBase organizes shelter data</title><link rel="stylesheet" type="text/css" href="../../css/commonltr.css"><link rel="stylesheet" type="text/css" href="../../css/custom.css"></head><body id="shelter-data-model"><nav class="toc" role="navigation"><ul><li><span>Getting started</span><ul><li><a href="../../topics/getting-started/about-corgibase.html">About CorgiBase</a></li><li><a href="../../topics/getting-started/shelter-data-model.html">How CorgiBase organizes shelter data</a></li><li><a href="../../topics/getting-started/signing-in.html">Signing in for the first time</a></li><li><a href="../../topics/getting-started/roles-permissions.html">Roles and permissions</a></li></ul></li><li><span>Animals</span><ul><li><a href="../../topics/animals/animal-records.html">Animal records</a><ul><li><a href="../../topics/animals/recording-intake.html">Recording an animal intake</a></li><li><a href="../../topics/animals/uploading-photos.html">Uploading animal photos</a></li><li><a href="../../topics/animals/assigning-kennels.html">Assigning an animal to a kennel</a></li><li><a href="../../topics/animals/animal-fields.html">Animal record fields</a></li></ul></li></ul></li><li><span>Medical care</span><ul><li><a href="../../topics/care/medical-records.html">Medical records and care plans</a><ul><li><a href="../../topics/care/logging-vaccination.html">Logging a vaccination</a></li><li><a href="../../topics/care/vaccination-schedule.html">Default dog vaccination schedule</a></li></ul></li></ul></li><li><span>Adoptions</span><ul><li><a href="../../topics/adoptions/adoption-workflow.html">How adoptions work</a><ul><li><a href="../../topics/adoptions/processing-application.html">Processing an adoption application</a></li><li><a href="../../topics/adoptions/publishing-listings.html">Publishing adoptable animals to your website</a></li><li><a href="../../topics/adoptions/adoption-statuses.html">Animal statuses</a></li></ul></li></ul></li><li><span>Volunteers</span><ul><li><a href="../../topics/volunteers/volunteer-shifts.html">Scheduling volunteer shifts</a></li></ul></li><li><span>Help</span><ul><li><a href="../../topics/help/keyboard-shortcuts.html">Keyboard shortcuts</a></li><li><a href="../../topics/help/faq.html">Frequently asked questions</a></li></ul></li></ul></nav><main role="main"><article role="article" aria-labelledby="ariaid-title1">
-  <h1 class="title topictitle1" id="ariaid-title1">How <span class="ph">CorgiBase</span> organizes shelter data</h1>
+  <h1 class="title" id="ariaid-title1">How <span class="ph">CorgiBase</span> organizes shelter data</h1>
   
   <div class="body conbody"><p class="shortdesc">Everything in <span class="ph">CorgiBase</span> connects to a small set of records:
     animals, people, locations and events. Knowing how they relate makes the rest of the app
     easier to navigate.</p>
     <dl class="dl">
       
-        <dt class="dt dlterm">Animal</dt>
+        <dt class="dt">Animal</dt>
         <dd class="dd">The central record. Each animal gets a permanent ID such as
           <code class="ph codeph">CB-2026-00412</code> at intake, and that ID never changes, even if the animal
           is adopted and later returned.</dd>
       
       
-        <dt class="dt dlterm">Person</dt>
+        <dt class="dt">Person</dt>
         <dd class="dd">Anyone outside your team who interacts with an animal: adopters, fosters, finders and
           surrendering owners. One person can have many roles over time.</dd>
       
       
-        <dt class="dt dlterm">Location</dt>
+        <dt class="dt">Location</dt>
         <dd class="dd">Where an animal is right now: a kennel, a foster home, a partner clinic or an offsite
           adoption event. Locations belong to a <dfn class="term">site</dfn> if your organization runs more
           than one facility.</dd>
       
       
-        <dt class="dt dlterm">Event</dt>
+        <dt class="dt">Event</dt>
         <dd class="dd">Anything that happens to an animal: intake, a vaccination, a move, an application, an
           adoption. Events are append-only, so every record has a complete, auditable
           timeline.</dd>
       
     </dl>
-    <section class="section"><h2 class="title sectiontitle">Status is derived from events</h2>
+    <section class="section"><h2 class="title">Status is derived from events</h2>
       
       <p class="p">You never edit an animal's status directly. Recording an event, such as approving an
         adoption, moves the animal to the right status automatically. This keeps reports accurate
