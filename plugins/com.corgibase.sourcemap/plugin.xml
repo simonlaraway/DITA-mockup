@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Adds source-location attributes to HTML5 output so the staging review widget can map
+     rendered content back to the DITA file and line it came from. Off unless
+     corgi.sourcemap=yes (build.sh sets it when SOURCEMAP=1). -->
+<plugin id="com.corgibase.sourcemap" version="1.0.0">
+  <require plugin="org.dita.html5"/>
+  <feature extension="dita.xsl.html5" file="xsl/sourcemap.xsl"/>
+  <feature extension="dita.conductor.html5.param" file="params.xml"/>
+</plugin>

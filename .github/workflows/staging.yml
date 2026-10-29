@@ -23,10 +23,18 @@ jobs:
       group: staging-${{ github.event.number }}
       cancel-in-progress: true
     steps:
-      # The default PR checkout is the merge commit: exactly what main would look like.
+      # Build the PR head, not the merge commit: review comments must use head-commit line
+      # numbers. The baseline is the merge-base, the same comparison as GitHub's Files tab.
       - uses: actions/checkout@v7
         with:
+          ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
+
+      - name: Find merge-base
+        id: shas
+        run: |
+          echo "head=${{ github.event.pull_request.head.sha }}" >> "$GITHUB_OUTPUT"
+          echo "base=$(git merge-base ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})" >> "$GITHUB_OUTPUT"
 
       - uses: actions/setup-java@v6
         with:
@@ -39,18 +47,24 @@ jobs:
 
       - run: pip install -r scripts/requirements.txt
 
+      - name: Unit tests
+        run: |
+          python3 -m unittest discover -s scripts
+          node --test scripts/*.test.mjs
+
       - uses: actions/cache@v6
         with:
           path: tools
-          key: dita-ot-${{ hashFiles('build.sh') }}
+          key: dita-ot-${{ hashFiles('build.sh', 'plugins/**') }}
 
+      # SOURCEMAP=1 tags every HTML element with the DITA file and line it came from.
       - name: Build PR (head)
-        run: ./build.sh
+        run: SOURCEMAP=1 ./build.sh
 
       # The baseline is built with the base commit's own build.sh, so it matches production.
       - name: Build base
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          BASE_SHA: ${{ steps.shas.outputs.base }}
         run: |
           git worktree add ../base "$BASE_SHA"
           ln -s "$PWD/tools" ../base/tools
@@ -61,12 +75,17 @@ jobs:
 
       - name: Diff and annotate
         run: |
+          python3 scripts/review_config.py \
+            --base "${{ steps.shas.outputs.base }}" --head "${{ steps.shas.outputs.head }}" \
+            --repo "${{ github.repository }}" --pr "${{ github.event.number }}" \
+            --preview-url "$PREVIEW_URL" --out review.json
           python3 scripts/stage_diff.py \
             --base ../base/out --head out --dest staged \
             --pr "${{ github.event.number }}" \
             --site-url "$PREVIEW_URL" --prod-url "$PROD_URL" \
-            --base-sha "${{ github.event.pull_request.base.sha }}" \
-            --head-sha "${{ github.event.pull_request.head.sha }}"
+            --base-sha "${{ steps.shas.outputs.base }}" \
+            --head-sha "${{ steps.shas.outputs.head }}" \
+            --repo-root . --review-config review.json
 
       - name: Deploy preview
         uses: rossjrw/pr-preview-action@v1

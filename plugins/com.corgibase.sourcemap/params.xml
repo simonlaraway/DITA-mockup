@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<params xmlns:if="ant:if">
+  <param name="corgi.sourcemap" expression="${corgi.sourcemap}" if:set="corgi.sourcemap"/>
+</params>
