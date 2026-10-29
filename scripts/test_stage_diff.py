@@ -167,5 +167,61 @@ class SiteTests(unittest.TestCase):
             self.assertIn("No rendered content changes", (tmp / "dest/changes.md").read_text())
 
 
+class SourceMapTests(unittest.TestCase):
+    def test_relativize_sources(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp).resolve()
+            src = repo / "content" / "topics" / "a b.dita"
+            d = lxml.html.document_fromstring(
+                '<html><body><main><article data-src-file="file:{a}" data-src-pos="2:5">'
+                '<p data-src-file="file:{a}" data-src-pos="34:9">x</p>'
+                '<p data-src-file="file:/opt/dita-ot/plugins/strings.xml" data-src-pos="1:1">y</p>'
+                '<p data-src-file="file:{a}">z</p></article></main></body></html>'
+                .format(a=src.as_uri()[len("file://"):]))
+            stage_diff.relativize_sources(d, repo)
+            ps = d.findall(".//p")
+            self.assertEqual(ps[0].get("data-src"), "content/topics/a b.dita:34:9")
+            self.assertIsNone(ps[1].get("data-src"))          # outside the repo: dropped
+            self.assertIsNone(ps[1].get("data-src-file"))
+            self.assertEqual(ps[2].get("data-src"), "content/topics/a b.dita")  # no position
+            self.assertEqual(d.find(".//article").get("data-src"), "content/topics/a b.dita:2:5")
+
+    def test_review_widget_injection(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            for d in ("base/user", "head/user"):
+                (tmp / d).mkdir(parents=True)
+            body = '<p data-src-file="file:{}" data-src-pos="3:1">Same.</p>'.format(tmp / "content/t.dita")
+            body = body.replace("<p ", '<p class="shortdesc" ')
+            (tmp / "base/user/a.html").write_text(PAGE.format(title="A", body="<p>Same.</p>"))
+            (tmp / "head/user/a.html").write_text(PAGE.format(title="A</script>", body=body))
+            ctx = stage_diff.Context(pr="7", site_url="https://x/", prod_url="", css="/*s*/",
+                                     repo_root=tmp, widget_css="/*w*/",
+                                     review={"repo": "o/r", "pr": 7, "head_sha": "abc", "files": {}})
+            stage_diff.build(tmp / "base", tmp / "head", tmp / "dest", ctx)
+            self.assertTrue((tmp / "dest/review-widget.js").exists())
+            out = (tmp / "dest/user/a.html").read_text()
+            self.assertIn('src="../review-widget.js"', out)
+            self.assertIn("/*s*//*w*/", out)
+            self.assertIn('data-src="content/t.dita:3:1"', out)
+            self.assertNotIn("A</script>", out.split('id="review-config"')[1].split("</script>")[0] + "</script>")
+            doc = lxml.html.document_fromstring(out)
+            import json
+            cfg = json.loads(doc.get_element_by_id("review-config").text)
+            self.assertEqual((cfg["page"], cfg["page_title"], cfg["repo"]), ("user/a.html", "A</script>", "o/r"))
+            self.assertEqual(cfg["topic_src"], "content/t.dita")  # most common source (no titled h1)
+
+    def test_no_widget_without_review_config(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            for d in ("base", "head"):
+                (tmp / d).mkdir()
+                (tmp / d / "a.html").write_text(PAGE.format(title="A", body="<p>Same.</p>"))
+            ctx = stage_diff.Context(pr="1", site_url="https://x/", prod_url="", css="")
+            stage_diff.build(tmp / "base", tmp / "head", tmp / "dest", ctx)
+            self.assertNotIn("review-config", (tmp / "dest/a.html").read_text())
+            self.assertFalse((tmp / "dest/review-widget.js").exists())
+
+
 if __name__ == "__main__":
     unittest.main()

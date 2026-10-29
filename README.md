@@ -120,18 +120,62 @@ shared note in `shared/reuse.dita` highlights it on every page that reuses it. C
 value (for example `product-version`) highlights every place it appears. Filtering is handled per
 deliverable, so a change to admin-only content shows up only in the admin guide.
 
+### Commenting from the staging preview
+
+Every staged page has a review widget. Hover over a paragraph, step, table row or note and
+click 💬 in the left margin, or select some text and click **Comment**. The panel shows the
+exact DITA file and line the content came from, and the comment is posted to the PR under your
+own GitHub name.
+
+**Where a comment lands.** GitHub only allows inline comments on lines that are part of the PR's
+diff, so the widget picks the best place it can:
+
+| The content's source is… | The comment becomes… |
+|---|---|
+| a line the PR changed (or a nearby context line) | an inline review comment on that line of the `.dita` file |
+| in a file the PR changed, but not near a change | a file-level review comment that cites the line |
+| in a file the PR didn't change (e.g. reused text) | a PR conversation comment with a link to the line |
+
+Content reused through conref or conkeyref maps to the file it's reused **from**, for example
+`content/shared/reuse.dita`, and the panel warns that changing it affects every page that uses
+it. Removed content (red strikethrough) has no source in the PR, so comments on it become
+conversation comments.
+
+**Existing comments.** Blocks that already have widget comments show a 💬 badge. Click it to
+read the thread. If a comment's source line has since moved, it's counted in the banner instead.
+
+**Connecting GitHub.** The first time you post, the widget asks for a fine-grained personal
+access token. Create it at *GitHub → Settings → Developer settings → Fine-grained tokens* with
+access to only this repository and the **Pull requests: Read and write** permission. The token
+is stored only in your browser (`localStorage`) and is sent only to `api.github.com`. Use
+*Sign out* in the panel to remove it.
+
+**How the mapping works.**
+1. `plugins/com.corgibase.sourcemap` is a DITA-OT plugin. When the build runs with
+   `SOURCEMAP=1`, it copies DITA-OT's source tracking (`@xtrf` file, `@xtrc` line:column) onto
+   every HTML element as `data-src-file` and `data-src-pos`. Production builds never set it.
+2. `scripts/review_config.py` records which lines of each changed file are in the PR diff.
+3. `scripts/stage_diff.py --repo-root . --review-config review.json` turns the attributes
+   into repo-relative `data-src="content/…dita:line:col"` and injects the config and
+   `theme/review-widget.js`.
+
+The staging build uses the PR's head commit, so line numbers match what GitHub shows. The
+baseline is the merge-base, the same comparison as GitHub's *Files changed* tab.
+
 Run it locally:
 
 ```
 python3 -m venv .venv && .venv/bin/pip install -r scripts/requirements.txt
 git worktree add ../base main && ln -s "$PWD/tools" ../base/tools && (cd ../base && ./build.sh)
-./build.sh
+SOURCEMAP=1 ./build.sh   # build the head with source locations
+.venv/bin/python scripts/review_config.py --base main --head HEAD --repo owner/repo --pr 0 \
+    --preview-url "file://$PWD/staged/" --out review.json
 .venv/bin/python scripts/stage_diff.py --base ../base/out --head out --dest staged \
-    --pr 0 --site-url "file://$PWD/staged/"
+    --pr 0 --site-url "file://$PWD/staged/" --repo-root . --review-config review.json
 open staged/changes.html
 ```
 
-Tests: `.venv/bin/python -m unittest discover -s scripts`
+Tests: `.venv/bin/python -m unittest discover -s scripts` and `node --test scripts/`
 
 Limits:
 - Moving a block shows as one removal plus one addition.

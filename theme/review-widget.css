@@ -1,0 +1,73 @@
+/* Staging review widget. Inlined into staged pages by scripts/stage_diff.py with --review-config. */
+.rw-ui[hidden] { display: none !important; }
+.rw-ui { font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+
+/* Hover target and the gutter button */
+.rw-hover  { outline: 1px dashed #8c959f; outline-offset: 3px; border-radius: 3px; }
+.rw-active { outline: 2px solid #8250df; outline-offset: 3px; border-radius: 3px; }
+.rw-gutter, .rw-selbtn {
+  position: absolute; z-index: 30; border: 1px solid #d0d7de; background: #fff; cursor: pointer;
+  border-radius: 6px; box-shadow: 0 1px 3px rgba(31, 36, 48, .15);
+}
+.rw-gutter { width: 28px; height: 28px; padding: 0; font-size: 14px; }
+.rw-selbtn { padding: .25rem .6rem; font-size: 13px; font-weight: 600; color: #8250df; }
+.rw-gutter:hover, .rw-selbtn:hover { border-color: #8250df; }
+
+/* Side panel */
+.rw-panel {
+  position: fixed; z-index: 40; top: 0; right: 0; bottom: 0; width: min(380px, 100vw);
+  background: #fff; border-left: 1px solid #d0d7de; box-shadow: -6px 0 18px rgba(31, 36, 48, .12);
+  padding: 1rem 1.1rem; overflow-y: auto; transform: translateX(105%); transition: transform .18s ease;
+  display: flex; flex-direction: column; gap: .7rem; color: #1f2430;
+}
+.rw-panel.rw-open { transform: none; }
+.rw-head { display: flex; align-items: center; justify-content: space-between; }
+.rw-x { border: 0; background: none; font-size: 22px; line-height: 1; cursor: pointer; color: #57606a; }
+.rw-src { font-family: ui-monospace, Menlo, monospace; font-size: 12.5px; word-break: break-all; }
+.rw-src a { color: #0969da; }
+.rw-reuse { margin: 0; padding: .45rem .6rem; background: #fff8c5; border-radius: 6px; font-size: 13px; }
+.rw-quote { margin: 0; padding: .3rem .7rem; border-left: 3px solid #d0d7de; color: #57606a; font-size: 13px; }
+.rw-panel textarea, .rw-panel input {
+  width: 100%; box-sizing: border-box; border: 1px solid #d0d7de; border-radius: 6px;
+  padding: .5rem .6rem; font: inherit; resize: vertical;
+}
+.rw-panel textarea:focus, .rw-panel input:focus { outline: 2px solid #8250df; border-color: transparent; }
+.rw-where, .rw-fine, .rw-account { margin: 0; font-size: 12.5px; color: #57606a; }
+.rw-steps { margin: 0; padding-left: 1.2rem; font-size: 13px; }
+.rw-actions { display: flex; justify-content: flex-end; gap: .5rem; }
+.rw-actions button {
+  border: 1px solid #d0d7de; background: #f6f8fa; border-radius: 6px; padding: .35rem .9rem;
+  font: inherit; cursor: pointer;
+}
+.rw-actions .rw-primary { background: #8250df; border-color: #8250df; color: #fff; font-weight: 600; }
+.rw-actions button:disabled { opacity: .6; cursor: default; }
+.rw-link { border: 0; background: none; padding: 0; color: #0969da; cursor: pointer; font: inherit; }
+
+/* Badges for existing comments */
+.rw-badge {
+  float: right; margin: 0 0 .2rem .6rem; border: 1px solid #c8b5f5; background: #f5f0ff; color: #6639ba;
+  border-radius: 999px; padding: 0 .5rem; font-size: 12px; font-weight: 600; cursor: pointer;
+  text-decoration: none; position: relative; z-index: 5;
+}
+.rw-orphans {
+  border: 0; border-radius: 3px; background: #c8b5f5; color: #1f2430; font-weight: 600;
+  padding: .1rem .5rem; cursor: pointer;
+}
+.rw-thread {
+  position: absolute; z-index: 45; width: min(360px, calc(100vw - 32px)); max-height: 60vh; overflow-y: auto;
+  background: #fff; border: 1px solid #d0d7de; border-radius: 8px; padding: .7rem .9rem;
+  box-shadow: 0 8px 24px rgba(31, 36, 48, .18); color: #1f2430;
+}
+.rw-comment { border-top: 1px solid #eaeef2; padding: .5rem 0; }
+.rw-meta { font-size: 12px; color: #57606a; }
+.rw-meta a { color: #0969da; }
+.rw-text { white-space: pre-wrap; font-size: 13.5px; margin-top: .2rem; }
+
+/* Toast */
+.rw-toast {
+  position: fixed; z-index: 50; left: 50%; bottom: 1.2rem; transform: translateX(-50%);
+  background: #1f2430; color: #fff; padding: .55rem 1rem; border-radius: 8px; font-size: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .25);
+}
+.rw-toast a { color: #c8b5f5; }
+.rw-toast.rw-error { background: #82071e; }

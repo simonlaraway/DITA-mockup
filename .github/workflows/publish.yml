@@ -30,7 +30,7 @@ jobs:
       - uses: actions/cache@v6
         with:
           path: tools
-          key: dita-ot-${{ hashFiles('build.sh') }}
+          key: dita-ot-${{ hashFiles('build.sh', 'plugins/**') }}
 
       - name: Build all deliverables
         run: ./build.sh

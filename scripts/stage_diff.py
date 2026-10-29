@@ -21,11 +21,13 @@ import argparse
 import copy
 import difflib
 import html
+import json
 import posixpath
 import re
 import shutil
 from dataclasses import dataclass, field
 from pathlib import Path
+from urllib.parse import unquote, urlparse
 
 import lxml.html
 
@@ -36,7 +38,9 @@ MARK_CLASSES = ("diff-added", "diff-changed", "diff-removed")
 PAIR_THRESHOLD = 0.5
 WORD_RE = re.compile(r"\w+(?:[.\-'’]\w+)*|[^\w\s]")  # keeps 3.2, built-in, don't whole
 SKIP_FILES = {"build.log"}
-DEFAULT_CSS = Path(__file__).resolve().parent.parent / "theme" / "staging.css"
+THEME_DIR = Path(__file__).resolve().parent.parent / "theme"
+DEFAULT_CSS = THEME_DIR / "staging.css"
+WIDGET_JS, WIDGET_CSS = "review-widget.js", "review-widget.css"
 
 
 # --------------------------------------------------------------------------- blocks
@@ -358,6 +362,9 @@ class Context:
     prod_url: str
     css: str
     pages: dict = field(default_factory=dict)
+    repo_root: Path = None   # set when the head build has source maps (SOURCEMAP=1)
+    review: dict = None      # review_config.py output; enables the comment widget
+    widget_css: str = ""
 
 
 def rel_link(from_path, to_path):
@@ -410,11 +417,45 @@ STEP_SCRIPT = """
 """
 
 
+def relativize_sources(doc, repo_root):
+    """Collapse data-src-file (file: URI) + data-src-pos ("line:col") from the sourcemap
+    plugin into data-src="repo/relative/path.dita:line:col". Sources outside the repo
+    (DITA-OT's own resources) are dropped."""
+    root = Path(repo_root).resolve()
+    for el in doc.iter():
+        if not isinstance(el.tag, str) or "data-src-file" not in el.attrib:
+            continue
+        uri = el.attrib.pop("data-src-file")
+        pos = el.attrib.pop("data-src-pos", "")
+        path = Path(unquote(urlparse(uri).path)) if uri.startswith("file:") else Path(uri)
+        try:
+            rel = path.resolve().relative_to(root).as_posix()
+        except ValueError:
+            continue
+        el.set("data-src", f"{rel}:{pos}" if pos else rel)
+
+
+def review_config_script(doc, page, ctx):
+    # The page's own topic file: from its title, else the most common source on the page.
+    srcs = [el.get("data-src").split(":")[0] for el in doc.iter()
+            if isinstance(el.tag, str) and el.get("data-src")]
+    title = next((el for el in doc.iter("h1") if el.get("data-src")), None)
+    topic_src = (title.get("data-src").split(":")[0] if title is not None
+                 else max(set(srcs), key=srcs.count) if srcs else "")
+    config = dict(ctx.review, page=page.path, page_title=page.title, page_status=page.status,
+                  topic_src=topic_src)
+    script = lxml.html.Element("script", {"type": "application/json", "id": "review-config"})
+    script.text = json.dumps(config).replace("</", "<\\/")
+    return script
+
+
 def decorate(doc, page, ctx):
+    if ctx.repo_root:
+        relativize_sources(doc, ctx.repo_root)
     head = doc.find(".//head")
     if head is not None:
         style = lxml.html.Element("style")
-        style.text = ctx.css
+        style.text = ctx.css + (ctx.widget_css if ctx.review else "")
         head.append(style)
     root = content_root(doc)
     if root is None:
@@ -427,6 +468,9 @@ def decorate(doc, page, ctx):
     script = lxml.html.Element("script")
     script.text = STEP_SCRIPT
     body.append(script)
+    if ctx.review:
+        body.append(review_config_script(doc, page, ctx))
+        body.append(lxml.html.Element("script", {"src": rel_link(page.path, WIDGET_JS)}))
 
 
 def mark_toc(doc, page, ctx):
@@ -569,6 +613,9 @@ def build(base_dir, head_dir, dest_dir, ctx, base_sha="", head_sha=""):
         ctx.pages[path] = page
         docs[path] = doc
 
+    if ctx.review:
+        shutil.copy2(THEME_DIR / WIDGET_JS, dest_dir / WIDGET_JS)
+
     # pass 2: banners, TOC markers, write out
     for path, doc in docs.items():
         decorate(doc, ctx.pages[path], ctx)
@@ -590,10 +637,17 @@ def main():
     ap.add_argument("--css", default=str(DEFAULT_CSS), help="staging stylesheet to inline")
     ap.add_argument("--base-sha", default="")
     ap.add_argument("--head-sha", default="")
+    ap.add_argument("--repo-root", default="", help="repo checkout the head was built from "
+                    "(turns sourcemap attributes into repo-relative data-src)")
+    ap.add_argument("--review-config", default="", help="review_config.py output; adds the comment widget")
     args = ap.parse_args()
 
     ctx = Context(pr=args.pr, site_url=args.site_url, prod_url=args.prod_url,
-                  css=Path(args.css).read_text(encoding="utf-8"))
+                  css=Path(args.css).read_text(encoding="utf-8"),
+                  repo_root=Path(args.repo_root) if args.repo_root else None)
+    if args.review_config:
+        ctx.review = json.loads(Path(args.review_config).read_text(encoding="utf-8"))
+        ctx.widget_css = (THEME_DIR / WIDGET_CSS).read_text(encoding="utf-8")
     pages = build(args.base, args.head, args.dest, ctx, args.base_sha, args.head_sha)
     changed = [p for p in pages.values() if p.status != "unchanged"]
     print(f"{len(pages)} pages, {len(changed)} affected:")

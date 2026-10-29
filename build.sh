@@ -2,6 +2,8 @@
 # Mock DITA -> HTML5 publishing pipeline.
 # Usage: ./build.sh            build every deliverable in project.xml
 #        ./build.sh user       build one deliverable (user | admin | api)
+#        SOURCEMAP=1 ./build.sh  also tag HTML elements with their DITA source location
+#                                (used by staging previews; never set for production)
 set -euo pipefail
 
 DITA_OT_VERSION="4.4.1"
@@ -22,7 +24,25 @@ if [[ ! -x "$DITA" ]]; then
 fi
 
 # Deliverable <output href>s in project.xml resolve against --output.
+# Install/refresh local DITA-OT plugins (plugins/*) when their contents change.
+for plugin in "$ROOT"/plugins/*/; do
+  [[ -f "$plugin/plugin.xml" ]] || continue
+  name="$(basename "$plugin")"
+  hash="$(cd "$plugin" && find . -type f -print0 | sort -z | xargs -0 shasum | shasum | cut -d' ' -f1)"
+  stamp="$DITA_HOME/plugins/$name/.installed-hash"
+  if [[ "$(cat "$stamp" 2>/dev/null)" != "$hash" ]]; then
+    echo "==> Installing plugin $name"
+    rm -rf "$DITA_HOME/plugins/$name"
+    cp -R "$plugin" "$DITA_HOME/plugins/$name"
+    "$DITA" install   # re-integrate all plugins in $DITA_HOME/plugins
+    echo "$hash" > "$stamp"
+  fi
+done
+
 args=(--project="$ROOT/project.xml" --output="$ROOT/out")
+if [[ "${SOURCEMAP:-}" == "1" ]]; then
+  args+=(-Dcorgi.sourcemap=yes)
+fi
 if [[ $# -gt 0 ]]; then
   args+=(--deliverable="$1")
 fi
