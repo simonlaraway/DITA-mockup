@@ -83,3 +83,59 @@ test('displayText strips the footer and marker', () => {
   const body = w.buildBody({ config, placement: { kind: 'line', path: 'content/topics/a.dita', line: 12 }, quote: 'Q', comment: 'Please reword', src: 'content/topics/a.dita:12:3' });
   assert.equal(w.displayText(body), '> Q\n\nPlease reword');
 });
+
+// ---- threads and replies ----------------------------------------------------------------
+
+const mk = (id, body, extra = {}) => ({ id, body, created_at: `2026-10-28T10:0${id % 10}:00Z`, user: { login: 'u' + id }, html_url: '#' + id, ...extra });
+const rootBody = (src, page = config.page) => w.buildBody({ config: { ...config, page }, placement: { kind: 'line', path: 'p', line: 1 }, quote: 'Q', comment: 'Root text', src });
+
+test('buildThreads: review threads pick up GitHub-native replies via in_reply_to_id', () => {
+  const review = [
+    mk(1, rootBody('content/a.dita:12:1')),
+    mk(3, 'Reply typed on GitHub, no marker', { in_reply_to_id: 1 }),
+    mk(2, 'Another reply', { in_reply_to_id: 1 }),
+    mk(4, 'Ordinary review comment, not from the widget'),
+    mk(5, 'Reply to the ordinary comment', { in_reply_to_id: 4 }),
+  ];
+  const threads = w.buildThreads(review, [], config.page);
+  assert.equal(threads.length, 1);
+  assert.equal(threads[0].kind, 'review');
+  assert.equal(threads[0].src, 'content/a.dita:12:1');
+  assert.deepEqual(threads[0].replies.map((c) => c.id), [2, 3]); // sorted by time
+});
+
+test('buildThreads: conversation replies attach via reply_to markers', () => {
+  const root = mk(10, rootBody('content/shared/reuse.dita:27:30'));
+  const t0 = w.buildThreads([], [root], config.page)[0];
+  const reply = mk(11, w.buildReplyBody({ config, thread: t0, comment: 'Agreed' }));
+  const stray = mk(12, w.buildReplyBody({ config, thread: { ...t0, root: { ...root, id: 999 } }, comment: 'orphan reply' }));
+  const threads = w.buildThreads([], [root, reply, stray, mk(13, 'plain PR chatter')], config.page);
+  assert.equal(threads.length, 1);
+  assert.equal(threads[0].kind, 'issue');
+  assert.deepEqual(threads[0].replies.map((c) => c.id), [11]);
+});
+
+test('buildThreads: only threads for this page; ordered oldest first', () => {
+  const threads = w.buildThreads(
+    [mk(7, rootBody('content/a.dita:1:1')), mk(6, rootBody('content/b.dita:1:1', 'admin/other.html'))],
+    [mk(5, rootBody(null))], config.page);
+  assert.deepEqual(threads.map((t) => [t.kind, t.root.id, t.src]), [['issue', 5, ''], ['review', 7, 'content/a.dita:1:1']]);
+});
+
+test('reply requests and bodies', () => {
+  const review = { kind: 'review', src: 'content/a.dita:12:1', root: mk(1, rootBody('content/a.dita:12:1')), replies: [] };
+  assert.equal(w.buildReplyBody({ config, thread: review, comment: '  Fixed, thanks  ' }), 'Fixed, thanks');
+  assert.deepEqual(w.replyRequestFor(review, config, 'B'), {
+    method: 'POST', url: 'https://api.github.com/repos/owner/repo/pulls/7/comments/1/replies', payload: { body: 'B' } });
+
+  const issue = { kind: 'issue', src: 'content/shared/reuse.dita:27:30', root: mk(10, rootBody('content/shared/reuse.dita:27:30')), replies: [] };
+  const body = w.buildReplyBody({ config, thread: issue, comment: 'Will do' });
+  assert.match(body, /^> @u10: Root text\n\nWill do\n/);
+  assert.deepEqual(w.parseMarker(body), { page: config.page, src: 'content/shared/reuse.dita:27:30', reply_to: 10 });
+  assert.equal(w.replyRequestFor(issue, config, 'B').url, 'https://api.github.com/repos/owner/repo/issues/7/comments');
+});
+
+test('splitComment separates the quoted content from the comment', () => {
+  assert.deepEqual(w.splitComment(rootBody('content/a.dita:1:1')), { quote: 'Q', text: 'Root text' });
+  assert.deepEqual(w.splitComment('Just text <b>x</b>'), { quote: '', text: 'Just text <b>x</b>' });
+});
