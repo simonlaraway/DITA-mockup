@@ -1,0 +1,27 @@
+<!DOCTYPE html
+  SYSTEM "about:legacy-compat">
+<html lang="en"><head><meta charset="UTF-8"><meta name="copyright" content="(C) Copyright 2026"><meta name="generator" content="DITA-OT"><meta name="description" content="The API uses standard HTTP status codes and returns a JSON error body that explains what went wrong."><title>Errors</title><link rel="stylesheet" type="text/css" href="../css/commonltr.css"><link rel="stylesheet" type="text/css" href="../css/custom.css"></head><body id="errors"><nav class="toc" role="navigation"><ul><li><a href="../api/api-overview.html">About the CorgiBase API</a><ul><li><a href="../api/creating-api-key.html">Creating an API key</a></li><li><a href="../api/first-request.html">Making your first request</a></li></ul></li><li><a href="../api/pagination-rate-limits.html">Pagination and rate limits</a></li><li><a href="../api/subscribing-webhooks.html">Subscribing to webhooks</a></li><li><span>Reference</span><ul><li><a href="../api/endpoints.html">Endpoints</a></li><li><a href="../api/animal-object.html">The animal object</a></li><li><a href="../api/errors.html">Errors</a></li></ul></li></ul></nav><main role="main"><article role="article" aria-labelledby="ariaid-title1">
+  <h1 class="title topictitle1" id="ariaid-title1">Errors</h1>
+  
+  <div class="body refbody"><p class="shortdesc">The API uses standard HTTP status codes and returns a JSON error body that explains
+    what went wrong.</p>
+    <section class="section"><h2 class="title sectiontitle">Error format</h2>
+      
+      <pre class="pre codeblock"><code>{
+  "error": {
+    "code": "validation_failed",
+    "message": "microchip must be 9, 10 or 15 digits",
+    "field": "microchip",
+    "request_id": "req_7Hc2xK9"
+  }
+}</code></pre>
+      <p class="p">Include the <code class="ph codeph">request_id</code> when you contact support.</p>
+    </section>
+    <table class="simpletable"><colgroup><col style="width:14.285714285714285%"><col style="width:28.57142857142857%"><col style="width:57.14285714285714%"></colgroup><thead><tr class="sthead"><th class="stentry" scope="col" id="errors__stentry__1">Status</th><th class="stentry" scope="col" id="errors__stentry__2">Code</th><th class="stentry" scope="col" id="errors__stentry__3">Meaning</th></tr></thead><tbody><tr class="strow"><td class="stentry" headers="errors__stentry__1">400</td><td class="stentry" headers="errors__stentry__2"><code class="ph codeph">invalid_request</code></td><td class="stentry" headers="errors__stentry__3">The request is malformed, for example invalid JSON.</td></tr><tr class="strow"><td class="stentry" headers="errors__stentry__1">401</td><td class="stentry" headers="errors__stentry__2"><code class="ph codeph">unauthorized</code></td><td class="stentry" headers="errors__stentry__3">The API key is missing, invalid or deleted.</td></tr><tr class="strow"><td class="stentry" headers="errors__stentry__1">403</td><td class="stentry" headers="errors__stentry__2"><code class="ph codeph">forbidden</code></td><td class="stentry" headers="errors__stentry__3">The key doesn't have the required scope, or your plan doesn't include write access.</td></tr><tr class="strow"><td class="stentry" headers="errors__stentry__1">404</td><td class="stentry" headers="errors__stentry__2"><code class="ph codeph">not_found</code></td><td class="stentry" headers="errors__stentry__3">The resource doesn't exist, or belongs to another shelter.</td></tr><tr class="strow"><td class="stentry" headers="errors__stentry__1">409</td><td class="stentry" headers="errors__stentry__2"><code class="ph codeph">conflict</code></td><td class="stentry" headers="errors__stentry__3">The change conflicts with the current state, for example approving an application for an animal that's already adopted.</td></tr><tr class="strow"><td class="stentry" headers="errors__stentry__1">422</td><td class="stentry" headers="errors__stentry__2"><code class="ph codeph">validation_failed</code></td><td class="stentry" headers="errors__stentry__3">A field value is invalid. See <code class="ph codeph">field</code> and <code class="ph codeph">message</code>.</td></tr><tr class="strow"><td class="stentry" headers="errors__stentry__1">429</td><td class="stentry" headers="errors__stentry__2"><code class="ph codeph">rate_limited</code></td><td class="stentry" headers="errors__stentry__3">Too many requests. Retry after the time in <code class="ph codeph">Retry-After</code>.</td></tr><tr class="strow"><td class="stentry" headers="errors__stentry__1">500</td><td class="stentry" headers="errors__stentry__2"><code class="ph codeph">internal_error</code></td><td class="stentry" headers="errors__stentry__3">Something went wrong on our side. Retry with backoff.</td></tr></tbody></table>
+    <section class="section">
+      <p class="p">If you still need help, contact <a class="xref" href="https://support.corgibase.example" target="_blank" rel="external noopener">CorgiBase Support</a> or email
+        <span class="ph">support@corgibase.example</span>. Check <a class="xref" href="https://status.corgibase.example" target="_blank" rel="external noopener">status.corgibase.example</a> for service
+        incidents.</p>
+    </section>
+  </div>
+</article></main></body></html>
