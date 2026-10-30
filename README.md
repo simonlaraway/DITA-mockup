@@ -98,9 +98,9 @@ DITA-OT is cached between runs. Changing `DITA_OT_VERSION` in `build.sh` invalid
 
 `.github/workflows/staging.yml` runs when a PR is opened, reopened or updated:
 
-1. Builds the PR (the merge commit, i.e. what `main` would become).
-2. Builds the PR's base commit with that commit's own `build.sh`, which gives the same output
-   as production.
+1. Builds the PR's head commit, with source locations turned on for the review widget.
+2. Builds the merge-base of the PR and `main` with that commit's own `build.sh`, which gives the
+   same output as production. This is the same comparison as GitHub's *Files changed* tab.
 3. Runs `scripts/stage_diff.py`, which compares the two outputs page by page and writes an
    annotated copy:
    - Added blocks get a green bar.
@@ -173,6 +173,8 @@ is stored only in your browser (`localStorage`) and is sent only to `api.github.
 
 The staging build uses the PR's head commit, so line numbers match what GitHub shows. The
 baseline is the merge-base, the same comparison as GitHub's *Files changed* tab.
+[docs/comment-mapping.md](docs/comment-mapping.md) walks through the whole mapping with a real
+example.
 
 Run it locally:
 
