@@ -123,9 +123,9 @@ deliverable, so a change to admin-only content shows up only in the admin guide.
 ### Commenting from the staging preview
 
 Every staged page has a review widget. Hover over a paragraph, step, table row or note and
-click 💬 in the left margin, or select some text and click **Comment**. The panel shows the
-exact DITA file and line the content came from, and the comment is posted to the PR under your
-own GitHub name.
+click the 💬 button that appears to its right, or select some text and click **Comment**. The
+panel shows the exact DITA file and line the content came from, and the comment is posted to the
+PR under your own GitHub name.
 
 **Where a comment lands.** GitHub only allows inline comments on lines that are part of the PR's
 diff, so the widget picks the best place it can:
@@ -141,8 +141,20 @@ Content reused through conref or conkeyref maps to the file it's reused **from**
 it. Removed content (red strikethrough) has no source in the PR, so comments on it become
 conversation comments.
 
-**Existing comments.** Blocks that already have widget comments show a 💬 badge. Click it to
-read the thread. If a comment's source line has since moved, it's counted in the banner instead.
+**Threads and replies.** Blocks that already have comments show a 💬 badge with the number of
+comments. Click it, or the 💬 button, to open the panel for that block:
+
+- Every thread on the block is listed with its replies, oldest first. A block can have several
+  threads; use **Start a new thread** at the bottom of the panel to add another.
+- Click **Reply…** under a thread to answer it. Replies to inline and file comments use GitHub's
+  native review-thread replies, so they also show up threaded on the PR. GitHub doesn't thread
+  conversation comments, so the widget links those replies to their thread with a hidden marker.
+- Replies written directly on GitHub (in a review thread) appear in the widget too.
+- Comments are fetched fresh every time the page loads. **Refresh comments** in the panel
+  re-fetches them without reloading.
+
+If a thread's source line has since moved, it's counted in the banner ("on moved content") and
+opens from there.
 
 **Connecting GitHub.** The first time you post, the widget asks for a fine-grained personal
 access token. Create it at *GitHub → Settings → Developer settings → Fine-grained tokens* with

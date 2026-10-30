@@ -114,9 +114,75 @@
       .trim();
   }
 
+  /** Split a comment for display into its leading "> " quote and the comment text. */
+  function splitComment(body) {
+    var lines = displayText(body).split('\n'), quote = [];
+    while (lines.length && /^>/.test(lines[0])) quote.push(lines.shift().replace(/^>\s?/, ''));
+    while (lines.length && !lines[0].trim()) lines.shift();
+    return { quote: quote.join(' ').trim(), text: lines.join('\n').trim() };
+  }
+
+  function byDate(a, b) { return a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : 0; }
+
+  /**
+   * Group a PR's comments into the threads that belong to `page`.
+   *  - Review threads (inline and file comments): the root carries the widget marker; replies,
+   *    whether posted from the widget or on GitHub, point at it with in_reply_to_id.
+   *  - Conversation threads: GitHub doesn't thread issue comments, so widget replies carry a
+   *    marker with reply_to = the root comment's id.
+   * Returns [{kind: 'review' | 'issue', src, root, replies}], oldest thread first.
+   */
+  function buildThreads(reviewComments, issueComments, page) {
+    var threads = {}, list = [];
+    (reviewComments || []).forEach(function (c) {
+      if (c.in_reply_to_id) return;
+      var meta = parseMarker(c.body);
+      if (!meta || meta.page !== page) return;
+      list.push(threads['review:' + c.id] = { kind: 'review', src: meta.src || '', root: c, replies: [] });
+    });
+    (reviewComments || []).forEach(function (c) {
+      var t = c.in_reply_to_id && threads['review:' + c.in_reply_to_id];
+      if (t) t.replies.push(c);
+    });
+    var issueReplies = [];
+    (issueComments || []).forEach(function (c) {
+      var meta = parseMarker(c.body);
+      if (!meta || meta.page !== page) return;
+      if (meta.reply_to) { issueReplies.push([meta.reply_to, c]); return; }
+      list.push(threads['issue:' + c.id] = { kind: 'issue', src: meta.src || '', root: c, replies: [] });
+    });
+    issueReplies.forEach(function (pair) {
+      var t = threads['issue:' + pair[0]];
+      if (t) t.replies.push(pair[1]);
+    });
+    list.forEach(function (t) { t.replies.sort(byDate); });
+    return list.sort(function (a, b) { return byDate(a.root, b.root); });
+  }
+
+  /** Body for a reply. Review replies are plain; conversation replies need a reply_to marker. */
+  function buildReplyBody(opts) {
+    var t = opts.thread, text = opts.comment.trim();
+    if (t.kind === 'review') return text;
+    var author = (t.root.user && t.root.user.login) || 'comment';
+    var excerpt = splitComment(t.root.body).text.replace(/\s+/g, ' ');
+    if (excerpt.length > 120) excerpt = excerpt.slice(0, 119) + '\u2026';
+    return '> @' + author + ': ' + excerpt + '\n\n' + text + '\n\n' +
+      buildMarker({ page: opts.config.page, src: t.src || null, reply_to: t.root.id });
+  }
+
+  function replyRequestFor(thread, config, body) {
+    var base = API + '/repos/' + config.repo;
+    if (thread.kind === 'review') {
+      return { method: 'POST', url: base + '/pulls/' + config.pr + '/comments/' + thread.root.id + '/replies',
+        payload: { body: body } };
+    }
+    return { method: 'POST', url: base + '/issues/' + config.pr + '/comments', payload: { body: body } };
+  }
+
   var helpers = { parseSrc: parseSrc, placement: placement, placementLabel: placementLabel,
     buildMarker: buildMarker, parseMarker: parseMarker, buildBody: buildBody,
-    requestFor: requestFor, displayText: displayText };
+    requestFor: requestFor, displayText: displayText, splitComment: splitComment,
+    buildThreads: buildThreads, buildReplyBody: buildReplyBody, replyRequestFor: replyRequestFor };
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = helpers;
@@ -139,7 +205,9 @@
     var headers = { 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
     if (token) headers.Authorization = 'Bearer ' + token;
     if (payload) headers['Content-Type'] = 'application/json';
-    return fetch(url, { method: method, headers: headers, body: payload ? JSON.stringify(payload) : undefined })
+    // GETs revalidate (ETag) instead of trusting GitHub's 60s cache, so a reload is always current.
+    return fetch(url, { method: method, headers: headers, cache: method === 'GET' ? 'no-cache' : 'default',
+      body: payload ? JSON.stringify(payload) : undefined })
       .then(function (r) {
         return r.json().catch(function () { return {}; }).then(function (data) {
           if (!r.ok) { var err = new Error(data.message || ('HTTP ' + r.status)); err.status = r.status; throw err; }
@@ -161,7 +229,7 @@
 
   // ---- choosing a target -------------------------------------------------------------
 
-  var current = null; // {el, src, quote}
+  var current = null; // {el, src, quote, orphans}
 
   function targetFor(node) {
     var e = node && (node.nodeType === 1 ? node : node.parentElement);
@@ -172,14 +240,32 @@
     return withSrc && root.contains(withSrc) && withSrc !== root ? { el: withSrc, src: withSrc.getAttribute('data-src') } : null;
   }
 
+  var NESTED_BLOCKS = 'p, div, table, ul, ol, dl, pre, li, section, blockquote, figure';
+
+  /**
+   * Text of a block as the PR has it: without widget badges, diff anchors or deleted words.
+   * Nested blocks (a step's info paragraph or choice table) are left out so the quote is the
+   * block's own text, unless that would leave nothing (e.g. a note whose text is in a div).
+   */
+  function textOf(node) {
+    var copy = node.cloneNode(true);
+    Array.prototype.forEach.call(copy.querySelectorAll('.rw-ui, .diff-anchor, del'), function (n) { n.remove(); });
+    var own = copy.cloneNode(true);
+    Array.prototype.forEach.call(own.querySelectorAll(NESTED_BLOCKS), function (n) { n.remove(); });
+    return own.textContent.trim() ? own.textContent : copy.textContent;
+  }
+
   var gutter = el('button', { type: 'button', class: 'rw-ui rw-gutter', title: 'Comment on this', 'aria-label': 'Comment on this', text: '💬' });
   var selBtn = el('button', { type: 'button', class: 'rw-ui rw-selbtn', text: '💬 Comment' });
   var hoverTarget = null;
   document.body.appendChild(gutter);
   document.body.appendChild(selBtn);
+  gutter.hidden = true;
+  selBtn.hidden = true;
 
   function place(node, x, y) { node.style.left = x + 'px'; node.style.top = y + 'px'; node.hidden = false; }
 
+  // The 💬 button sits just right of the hovered block (inside it if the window is too narrow).
   root.addEventListener('mouseover', function (ev) {
     if (panel.classList.contains('rw-open')) return;
     var t = targetFor(ev.target);
@@ -187,19 +273,15 @@
     if (hoverTarget) hoverTarget.el.classList.remove('rw-hover');
     hoverTarget = t;
     t.el.classList.add('rw-hover');
-    var r = t.el.getBoundingClientRect(), rootR = root.getBoundingClientRect();
-    place(gutter, window.scrollX + Math.max(rootR.left - 34, 2), window.scrollY + r.top);
+    var r = t.el.getBoundingClientRect();
+    var x = r.right + 8;
+    if (x + 30 > document.documentElement.clientWidth) x = r.right - 32;
+    place(gutter, window.scrollX + x, window.scrollY + r.top);
   });
-  root.addEventListener('mouseleave', function () {
+  root.addEventListener('mouseleave', function (ev) {
+    if (ev.relatedTarget === gutter) return;
     if (hoverTarget) hoverTarget.el.classList.remove('rw-hover');
   });
-  /** Text of a block as the PR has it: without widget badges, diff anchors or deleted words. */
-  function textOf(node) {
-    var copy = node.cloneNode(true);
-    Array.prototype.forEach.call(copy.querySelectorAll('.rw-ui, .diff-anchor, del'), function (n) { n.remove(); });
-    return copy.textContent;
-  }
-
   gutter.addEventListener('click', function () {
     if (hoverTarget) openPanel({ el: hoverTarget.el, src: hoverTarget.src, quote: textOf(hoverTarget.el) });
   });
@@ -221,12 +303,28 @@
       selBtn.onclick = function () { selBtn.hidden = true; openPanel({ el: t.el, src: t.src, quote: text }); };
     }, 0);
   });
-  selBtn.hidden = true;
-  gutter.hidden = true;
+
+  // ---- comment state -----------------------------------------------------------------
+
+  var reviewComments = [], issueComments = [], threads = [];
+
+  function rebuild() {
+    threads = buildThreads(reviewComments, issueComments, config.page);
+    renderBadges();
+  }
+
+  function remember(comment, kind) {
+    var list = kind === 'review' ? reviewComments : issueComments;
+    if (!list.some(function (c) { return c.id === comment.id; })) list.push(comment);
+    rebuild();
+  }
+
+  function threadsFor(src) { return threads.filter(function (t) { return t.src === src; }); }
+  function countOf(ts) { return ts.reduce(function (n, t) { return n + 1 + t.replies.length; }, 0); }
 
   // ---- panel -------------------------------------------------------------------------
 
-  var panel = el('aside', { class: 'rw-ui rw-panel', 'aria-label': 'Review comment', role: 'dialog' });
+  var panel = el('aside', { class: 'rw-ui rw-panel', 'aria-label': 'Review comments', role: 'dialog' });
   document.body.appendChild(panel);
   var toast = el('div', { class: 'rw-ui rw-toast', role: 'status' });
   document.body.appendChild(toast);
@@ -243,16 +341,16 @@
 
   function closePanel() {
     panel.classList.remove('rw-open');
-    if (current) current.el.classList.remove('rw-active');
+    if (current && current.el) current.el.classList.remove('rw-active');
     current = null;
   }
 
   function openPanel(target) {
-    if (current) current.el.classList.remove('rw-active');
+    if (current && current.el) current.el.classList.remove('rw-active');
     current = target;
-    current.el.classList.add('rw-active');
-    current.el.classList.remove('rw-hover');
-    renderCompose('');
+    if (current.el) { current.el.classList.add('rw-active'); current.el.classList.remove('rw-hover'); }
+    gutter.hidden = true;
+    renderPanel();
     panel.classList.add('rw-open');
   }
 
@@ -263,47 +361,123 @@
     ]);
   }
 
-  function renderCompose(draft) {
-    var p = placement(current.src, config);
-    var s = parseSrc(current.src);
+  /** Re-render the panel for `current`, keeping any text typed into its boxes. */
+  function renderPanel() {
+    if (!current) return;
+    var drafts = {};
+    Array.prototype.forEach.call(panel.querySelectorAll('textarea[data-draft]'), function (ta) {
+      if (ta.value) drafts[ta.getAttribute('data-draft')] = ta.value;
+    });
+    var focusKey = document.activeElement && panel.contains(document.activeElement) ? document.activeElement.getAttribute('data-draft') : null;
+
+    var ts = current.orphans ? threads.filter(function (t) { return !findTarget(t.src); }) : threadsFor(current.src);
     panel.textContent = '';
-    panel.appendChild(header('Comment on this content'));
+    panel.appendChild(header(current.orphans ? 'Comments on content that moved'
+      : ts.length ? countOf(ts) + ' comment' + (countOf(ts) === 1 ? '' : 's') + ' on this content' : 'Comment on this content'));
 
-    var srcLine = el('div', { class: 'rw-src' });
-    if (s) {
-      srcLine.appendChild(el('a', { href: blobUrl(config, s.path, s.line), target: '_blank', rel: 'noopener',
-        text: s.path + (s.line ? ':' + s.line : '') }));
+    if (!current.orphans) {
+      var s = parseSrc(current.src);
+      var srcLine = el('div', { class: 'rw-src' });
+      if (s) {
+        srcLine.appendChild(el('a', { href: blobUrl(config, s.path, s.line), target: '_blank', rel: 'noopener',
+          text: s.path + (s.line ? ':' + s.line : '') }));
+      } else {
+        srcLine.appendChild(document.createTextNode(current.el && current.el.classList.contains('diff-removed')
+          ? 'Removed content (no source in this PR)' : 'No source location'));
+      }
+      panel.appendChild(srcLine);
+      if (s && config.topic_src && s.path !== config.topic_src && /\.dita$/.test(s.path)) {
+        panel.appendChild(el('p', { class: 'rw-reuse', text: 'This text is reused from ' + s.path +
+          '. Changing it there affects every page that uses it.' }));
+      }
     } else {
-      srcLine.appendChild(document.createTextNode(current.el.classList.contains('diff-removed')
-        ? 'Removed content (no source in this PR)' : 'No source location'));
+      panel.appendChild(el('p', { class: 'rw-fine', text: 'The source lines these comments were made on aren’t on this page any more (the PR changed since).' }));
     }
-    panel.appendChild(srcLine);
 
-    if (s && config.topic_src && s.path !== config.topic_src && /\.dita$/.test(s.path)) {
-      panel.appendChild(el('p', { class: 'rw-reuse', text: 'This text is reused from ' + s.path +
-        '. Changing it there affects every page that uses it.' }));
-    }
-    var quote = (current.quote || '').replace(/\s+/g, ' ').trim();
-    if (quote) panel.appendChild(el('blockquote', { class: 'rw-quote', text: quote.length > QUOTE_MAX ? quote.slice(0, QUOTE_MAX - 1) + '…' : quote }));
+    ts.forEach(function (t) { panel.appendChild(renderThread(t, drafts)); });
 
-    var ta = el('textarea', { rows: '6', placeholder: 'Leave a comment…  (Ctrl/⌘+Enter to post)' });
-    ta.value = draft || '';
-    panel.appendChild(ta);
-    panel.appendChild(el('p', { class: 'rw-where', text: 'Posts as: ' + placementLabel(p) }));
-
-    var submit = el('button', { type: 'button', class: 'rw-primary', text: 'Comment' });
-    var actions = el('div', { class: 'rw-actions' }, [
-      el('button', { type: 'button', text: 'Cancel', on: { click: closePanel } }), submit]);
-    panel.appendChild(actions);
+    if (!current.orphans) panel.appendChild(renderComposer(ts.length > 0, drafts['new'] || ''));
     panel.appendChild(accountLine());
+
+    var focus = focusKey && panel.querySelector('textarea[data-draft="' + focusKey + '"]');
+    if (focus) focus.focus();
+    else if (!ts.length) { var ta = panel.querySelector('textarea[data-draft="new"]'); if (ta) setTimeout(function () { ta.focus(); }, 0); }
+  }
+
+  function renderComment(c, isRoot) {
+    var parts = splitComment(c.body);
+    var box = el('div', { class: 'rw-comment' + (isRoot ? ' rw-root' : '') }, [
+      el('div', { class: 'rw-meta' }, [
+        el('strong', { text: (c.user && c.user.login) || 'unknown' }),
+        ' · ' + new Date(c.created_at).toLocaleString() + ' · ',
+        el('a', { href: c.html_url, target: '_blank', rel: 'noopener', text: 'GitHub' })
+      ])
+    ]);
+    if (isRoot && parts.quote) box.appendChild(el('blockquote', { class: 'rw-quote', text: parts.quote }));
+    box.appendChild(el('div', { class: 'rw-text', text: parts.text }));
+    return box;
+  }
+
+  function renderThread(t, drafts) {
+    var key = t.kind + ':' + t.root.id;
+    var box = el('section', { class: 'rw-threadbox' });
+    box.appendChild(renderComment(t.root, true));
+    t.replies.forEach(function (c) { box.appendChild(renderComment(c, false)); });
+
+    var ta = el('textarea', { rows: '3', 'data-draft': key, placeholder: 'Reply…  (Ctrl/⌘+Enter to send)' });
+    ta.value = drafts[key] || '';
+    var send = el('button', { type: 'button', class: 'rw-primary', text: 'Reply' });
+    var form = el('div', { class: 'rw-reply' }, [ta, el('div', { class: 'rw-actions' }, [send])]);
+    var opener = el('button', { type: 'button', class: 'rw-replybtn', text: 'Reply…' });
+    form.hidden = !ta.value;
+    opener.hidden = !!ta.value;
+    opener.addEventListener('click', function () { opener.hidden = true; form.hidden = false; ta.focus(); });
+    box.appendChild(opener);
+    box.appendChild(form);
 
     function go() {
       var text = ta.value.trim();
       if (!text) { ta.focus(); return; }
-      if (!getToken()) { renderConnect(ta.value); return; }
-      submit.disabled = true;
-      submit.textContent = 'Posting…';
-      post(p, text).then(function () { submit.disabled = false; }, function () {
+      if (!getToken()) { renderConnect(); return; }
+      send.disabled = true; send.textContent = 'Sending…';
+      var req = replyRequestFor(t, config, buildReplyBody({ config: config, thread: t, comment: text }));
+      gh(req.method, req.url, req.payload, getToken()).then(function (res) {
+        ta.value = '';
+        remember(res.data, t.kind);
+        renderPanel();
+        showToast(['Reply posted. ', el('a', { href: res.data.html_url, target: '_blank', rel: 'noopener', text: 'View on GitHub' })]);
+      }, function (err) {
+        send.disabled = false; send.textContent = 'Reply';
+        showToast([errorMessage(err, 'reply')], true);
+      });
+    }
+    send.addEventListener('click', go);
+    ta.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) { ev.preventDefault(); go(); }
+    });
+    return box;
+  }
+
+  function renderComposer(hasThreads, draft) {
+    var p = placement(current.src, config);
+    var box = el('section', { class: 'rw-compose' });
+    if (hasThreads) box.appendChild(el('h4', { text: 'Start a new thread' }));
+    var quote = (current.quote || '').replace(/\s+/g, ' ').trim();
+    if (quote) box.appendChild(el('blockquote', { class: 'rw-quote', text: quote.length > QUOTE_MAX ? quote.slice(0, QUOTE_MAX - 1) + '…' : quote }));
+    var ta = el('textarea', { rows: hasThreads ? '3' : '6', 'data-draft': 'new', placeholder: 'Leave a comment…  (Ctrl/⌘+Enter to post)' });
+    ta.value = draft;
+    box.appendChild(ta);
+    box.appendChild(el('p', { class: 'rw-where', text: 'Posts as: ' + placementLabel(p) }));
+    var submit = el('button', { type: 'button', class: 'rw-primary', text: 'Comment' });
+    box.appendChild(el('div', { class: 'rw-actions' }, [
+      el('button', { type: 'button', text: 'Close', on: { click: closePanel } }), submit]));
+
+    function go() {
+      var text = ta.value.trim();
+      if (!text) { ta.focus(); return; }
+      if (!getToken()) { renderConnect(); return; }
+      submit.disabled = true; submit.textContent = 'Posting…';
+      post(p, text).then(function () { ta.value = ''; renderPanel(); }, function () {
         submit.disabled = false; submit.textContent = 'Comment';
       });
     }
@@ -311,7 +485,7 @@
     ta.addEventListener('keydown', function (ev) {
       if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) { ev.preventDefault(); go(); }
     });
-    setTimeout(function () { ta.focus(); }, 0);
+    return box;
   }
 
   function accountLine() {
@@ -322,18 +496,24 @@
       line.appendChild(document.createTextNode('Signed in to GitHub' + (login ? ' as ' + login : '') + ' · '));
       line.appendChild(el('button', { type: 'button', class: 'rw-link', text: 'Sign out', on: { click: function () {
         setToken(''); try { localStorage.removeItem(storeKey + ':login'); } catch (e) { /* ignore */ }
-        var ta = panel.querySelector('textarea'); renderCompose(ta ? ta.value : '');
+        renderPanel();
       } } }));
     } else {
-      line.appendChild(el('button', { type: 'button', class: 'rw-link', text: 'Connect GitHub', on: { click: function () {
-        var ta = panel.querySelector('textarea'); renderConnect(ta ? ta.value : '');
-      } } }));
+      line.appendChild(el('button', { type: 'button', class: 'rw-link', text: 'Connect GitHub', on: { click: function () { renderConnect(); } } }));
     }
+    line.appendChild(document.createTextNode(' · '));
+    line.appendChild(el('button', { type: 'button', class: 'rw-link', text: 'Refresh comments', on: { click: function () {
+      loadComments().then(renderPanel);
+    } } }));
     return line;
   }
 
-  function renderConnect(draft) {
-    panel.textContent = '';
+  function renderConnect() {
+    // Keep drafts: hide the panel body instead of discarding it.
+    var saved = Array.prototype.slice.call(panel.childNodes);
+    saved.forEach(function (n) { n.remove(); });
+    function back() { panel.textContent = ''; saved.forEach(function (n) { panel.appendChild(n); }); }
+
     panel.appendChild(header('Connect GitHub'));
     panel.appendChild(el('p', { text: 'Comments are posted to the pull request as you. Create a fine-grained personal access token and paste it below:' }));
     panel.appendChild(el('ol', { class: 'rw-steps' }, [
@@ -347,7 +527,7 @@
     panel.appendChild(el('p', { class: 'rw-fine', text: 'Stored only in this browser and sent only to api.github.com.' }));
     var save = el('button', { type: 'button', class: 'rw-primary', text: 'Save token' });
     panel.appendChild(el('div', { class: 'rw-actions' }, [
-      el('button', { type: 'button', text: 'Back', on: { click: function () { renderCompose(draft); } } }), save]));
+      el('button', { type: 'button', text: 'Back', on: { click: back } }), save]));
     save.addEventListener('click', function () {
       var t = input.value.trim();
       if (!t) { input.focus(); return; }
@@ -355,8 +535,8 @@
       gh('GET', API + '/user', null, t).then(function (res) {
         setToken(t);
         try { localStorage.setItem(storeKey + ':login', res.data.login || ''); } catch (e) { /* ignore */ }
-        renderCompose(draft);
-        loadComments();
+        back();
+        loadComments().then(renderPanel);
       }, function (err) {
         save.disabled = false; save.textContent = 'Save token';
         showToast(['That token didn’t work: ' + err.message], true);
@@ -365,11 +545,19 @@
     setTimeout(function () { input.focus(); }, 0);
   }
 
+  function errorMessage(err, what) {
+    return err.status === 401 ? 'GitHub rejected the token. Sign out and connect again.'
+      : err.status === 403 || err.status === 404 ? 'This token can’t comment on ' + config.repo + ' (needs Pull requests: Read and write).'
+      : 'Couldn’t post the ' + what + ': ' + err.message;
+  }
+
   function post(p, text) {
     var token = getToken();
     var attempt = function (pl) {
       var req = requestFor(pl, config, buildBody({ config: config, placement: pl, quote: current.quote, comment: text, src: current.src }));
-      return gh(req.method, req.url, req.payload, token).catch(function (err) {
+      return gh(req.method, req.url, req.payload, token).then(function (res) {
+        return { comment: res.data, kind: pl.kind === 'conversation' ? 'issue' : 'review' };
+      }, function (err) {
         // 422: GitHub rejected the line or file (e.g. the PR moved on). Fall back a level.
         if (err.status === 422 && pl.kind === 'line') return attempt({ kind: 'file', path: pl.path, line: pl.line });
         if (err.status === 422 && pl.kind === 'file') return attempt({ kind: 'conversation', path: pl.path, line: pl.line });
@@ -377,33 +565,22 @@
       });
     };
     return attempt(p).then(function (res) {
-      var c = res.data;
-      addComments([c]);
-      closePanel();
-      showToast(['Comment posted. ', el('a', { href: c.html_url, target: '_blank', rel: 'noopener', text: 'View on GitHub' })]);
+      remember(res.comment, res.kind);
+      showToast(['Comment posted. ', el('a', { href: res.comment.html_url, target: '_blank', rel: 'noopener', text: 'View on GitHub' })]);
     }, function (err) {
-      var msg = err.status === 401 ? 'GitHub rejected the token. Sign out and connect again.'
-        : err.status === 403 || err.status === 404 ? 'This token can’t comment on ' + config.repo + ' (needs Pull requests: Read and write).'
-        : 'Couldn’t post the comment: ' + err.message;
-      showToast([msg], true);
+      showToast([errorMessage(err, 'comment')], true);
       throw err;
     });
   }
 
   document.addEventListener('keydown', function (ev) {
-    if (ev.key === 'Escape') { closePanel(); closeThread(); selBtn.hidden = true; }
+    if (ev.key === 'Escape') { closePanel(); selBtn.hidden = true; }
   });
 
-  // ---- markers for existing comments ---------------------------------------------------
+  // ---- badges for existing threads -----------------------------------------------------
 
-  var bySrc = {};       // src -> [comment]
   var badges = {};      // src -> badge button
-  var orphanBtn = null; // comments whose source isn't on this page any more
-  var thread = el('div', { class: 'rw-ui rw-thread', role: 'dialog', 'aria-label': 'Comments' });
-  thread.hidden = true;
-  document.body.appendChild(thread);
-
-  function closeThread() { thread.hidden = true; }
+  var orphanBtn = null; // threads whose source isn't on this page any more
 
   function findTarget(src) {
     if (!src) return null;
@@ -412,66 +589,34 @@
     return null;
   }
 
-  function addComments(list) {
-    list.forEach(function (c) {
-      var meta = parseMarker(c.body);
-      if (!meta || meta.page !== config.page) return;
-      var key = meta.src || '';
-      bySrc[key] = bySrc[key] || [];
-      if (!bySrc[key].some(function (x) { return x.id === c.id; })) bySrc[key].push(c);
-    });
-    renderBadges();
-  }
-
   function renderBadges() {
-    var orphans = [];
+    var bySrc = {}, orphans = [];
+    threads.forEach(function (t) {
+      if (findTarget(t.src)) (bySrc[t.src] = bySrc[t.src] || []).push(t);
+      else orphans.push(t);
+    });
     Object.keys(bySrc).forEach(function (src) {
-      var target = findTarget(src);
-      if (!target) { orphans = orphans.concat(bySrc[src]); return; }
-      var b = badges[src];
+      var target = findTarget(src), b = badges[src];
       if (!b) {
-        b = badges[src] = el('button', { type: 'button', class: 'rw-ui rw-badge', title: 'Review comments' });
-        b.addEventListener('click', function (ev) { ev.stopPropagation(); openThread(bySrc[src], b); });
+        b = badges[src] = el('button', { type: 'button', class: 'rw-ui rw-badge', title: 'Show comments' });
+        b.addEventListener('click', function (ev) {
+          ev.stopPropagation();
+          openPanel({ el: target, src: src, quote: textOf(target) });
+        });
         target.insertBefore(b, target.firstChild);
       }
-      b.textContent = '💬 ' + bySrc[src].length;
+      b.textContent = '💬 ' + countOf(bySrc[src]);
     });
     var banner = document.querySelector('.staging-banner');
     if (orphans.length && banner) {
       if (!orphanBtn) {
         orphanBtn = el('button', { type: 'button', class: 'rw-ui rw-orphans' });
+        orphanBtn.addEventListener('click', function (ev) { ev.stopPropagation(); openPanel({ el: null, src: null, orphans: true }); });
         banner.appendChild(orphanBtn);
       }
-      orphanBtn.textContent = '💬 ' + orphans.length + ' on this page';
-      orphanBtn.onclick = function (ev) { ev.stopPropagation(); openThread(orphans, orphanBtn); };
+      orphanBtn.textContent = '💬 ' + countOf(orphans) + ' on moved content';
     }
   }
-
-  function openThread(comments, anchor) {
-    thread.textContent = '';
-    thread.appendChild(el('div', { class: 'rw-head' }, [
-      el('strong', { text: comments.length + ' comment' + (comments.length === 1 ? '' : 's') }),
-      el('button', { type: 'button', class: 'rw-x', 'aria-label': 'Close', text: '×', on: { click: closeThread } })
-    ]));
-    comments.slice().sort(function (a, b) { return a.created_at < b.created_at ? -1 : 1; }).forEach(function (c) {
-      var text = displayText(c.body);
-      thread.appendChild(el('div', { class: 'rw-comment' }, [
-        el('div', { class: 'rw-meta' }, [
-          el('strong', { text: (c.user && c.user.login) || 'unknown' }),
-          ' · ' + new Date(c.created_at).toLocaleString() + ' · ',
-          el('a', { href: c.html_url, target: '_blank', rel: 'noopener', text: 'Open on GitHub' })
-        ]),
-        el('div', { class: 'rw-text', text: text.length > 600 ? text.slice(0, 599) + '…' : text })
-      ]));
-    });
-    var r = anchor.getBoundingClientRect();
-    thread.hidden = false;
-    place(thread, window.scrollX + Math.min(r.left, window.innerWidth - thread.offsetWidth - 16), window.scrollY + r.bottom + 6);
-  }
-
-  document.addEventListener('click', function (ev) {
-    if (!thread.hidden && !thread.contains(ev.target)) closeThread();
-  });
 
   function fetchAll(url, token, acc) {
     acc = acc || [];
@@ -482,14 +627,19 @@
     });
   }
 
+  /** Fetch every review and conversation comment on the PR (runs on each page load). */
   function loadComments() {
     var token = getToken();
     var base = API + '/repos/' + config.repo;
     var q = '?per_page=100';
     return Promise.all([
-      fetchAll(base + '/pulls/' + config.pr + '/comments' + q, token).catch(function () { return []; }),
-      fetchAll(base + '/issues/' + config.pr + '/comments' + q, token).catch(function () { return []; })
-    ]).then(function (lists) { addComments(lists[0].concat(lists[1])); });
+      fetchAll(base + '/pulls/' + config.pr + '/comments' + q, token).catch(function () { return null; }),
+      fetchAll(base + '/issues/' + config.pr + '/comments' + q, token).catch(function () { return null; })
+    ]).then(function (lists) {
+      if (lists[0]) reviewComments = lists[0];
+      if (lists[1]) issueComments = lists[1];
+      rebuild();
+    });
   }
 
   loadComments();
