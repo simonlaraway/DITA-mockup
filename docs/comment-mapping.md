@@ -29,7 +29,7 @@ While DITA-OT preprocesses a map, its XML parser stamps two attributes onto ever
 | Attribute | Example | Meaning |
 |---|---|---|
 | `@xtrf` | `file:/…/content/topics/animals/recording-intake.dita` | the file the element was parsed from |
-| `@xtrc` | `step:3;12:13` | the element's name and count, then `line:column` |
+| `@xtrc` | `step:2;12:13` | the element's name and count, then `line:column` |
 
 DITA-OT uses these for its own error messages ("… at recording-intake.dita line 12"). We reuse
 them.
@@ -68,6 +68,8 @@ Key references work differently: `<ph keyref="product-name"/>` maps to the topic
 the `<ph>`, not to `keys.ditamap`.
 
 ## 2. The sourcemap plugin writes the location into the HTML
+
+[sourcemap-plugin.md](sourcemap-plugin.md) covers this step in full detail.
 
 `plugins/com.corgibase.sourcemap` is a DITA-OT plugin. DITA-OT's HTML5 transform applies a
 template mode called `commonattributes` to almost every element it outputs. That's where it
