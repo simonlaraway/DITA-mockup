@@ -8,6 +8,7 @@
 
   <keydef keys="api-overview" href="api/api-overview.dita"/>
   <keydef keys="creating-api-key" href="api/creating-api-key.dita"/>
+  <keydef keys="auth" href="api/auth.dita"/>
   <keydef keys="first-request" href="api/first-request.dita"/>
   <keydef keys="pagination-rate-limits" href="api/pagination-rate-limits.dita"/>
   <keydef keys="subscribing-webhooks" href="api/subscribing-webhooks.dita"/>
@@ -17,6 +18,7 @@
 
   <topicref keyref="api-overview">
     <topicref keyref="creating-api-key"/>
+    <topicref keyref="auth"/>
     <topicref keyref="first-request"/>
   </topicref>
   <topicref keyref="pagination-rate-limits"/>

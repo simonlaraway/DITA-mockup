@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE concept PUBLIC "-//OASIS//DTD DITA Concept//EN" "concept.dtd">
+<concept id="auth">
+  <title>Authenticating API requests</title>
+  <shortdesc>Authenticate every CorgiBase API request with Basic authentication or an OAuth 2.0
+    access token. Use HTTPS and keep credentials out of client-side code.</shortdesc>
+  <conbody>
+    <p>Both methods identify the integration and its allowed scopes. Choose the method your
+      integration supports; for most server-side integrations, an API key is the simplest option.
+      Send credentials only in the <codeph>Authorization</codeph> header, never in a URL.</p>
+    <section>
+      <title>Basic authentication</title>
+      <p>Use an API key as the Basic authentication username and leave the password empty. Your
+        HTTP client encodes the credentials and sends them in the
+        <codeph>Authorization</codeph> header. For example, with <cmdname>curl</cmdname>:</p>
+      <codeblock>export CORGIBASE_KEY="cb_test_..."
+curl "<ph keyref="api-base-url"/>/animals" \
+  -u "$CORGIBASE_KEY:"</codeblock>
+      <p>Create and manage keys in <ph keyref="product-name"/> under
+        <menucascade><uicontrol>Settings</uicontrol><uicontrol>API keys</uicontrol></menucascade>.
+        Choose only the scopes the integration needs, and use a sandbox key while developing.
+        Basic authentication sends the key with each request, so store it in a secrets manager
+        and use it only from a trusted server.</p>
+    </section>
+    <section>
+      <title>OAuth 2.0 client credentials</title>
+      <p>For a server-to-server integration that needs short-lived credentials, use the OAuth 2.0
+        client credentials grant. Register an integration to obtain a client ID and client
+        secret, and request only the scopes it needs. Exchange the credentials for an access
+        token, then send that token as a bearer token on API requests:</p>
+      <codeblock>curl -X POST "<ph keyref="api-base-url"/>/oauth/token" \
+  -u "$CORGIBASE_CLIENT_ID:$CORGIBASE_CLIENT_SECRET" \
+  -d "grant_type=client_credentials" \
+  -d "scope=animals:read"</codeblock>
+      <p>The token response includes an access token and its lifetime. Use the token until it
+        expires, then request another; do not send the client secret with API requests.</p>
+      <codeblock>curl "<ph keyref="api-base-url"/>/animals" \
+  -H "Authorization: Bearer $CORGIBASE_ACCESS_TOKEN"</codeblock>
+      <p>Keep the client secret on your server and out of source control, browser code, and
+        mobile apps. Use a separate client for each integration so you can rotate its secret
+        without disrupting other clients.</p>
+    </section>
+    <section>
+      <title>Choosing a method</title>
+      <p>Use Basic authentication with an API key when you want a straightforward integration
+        using the scopes and live or sandbox access configured for that key. Use OAuth 2.0 when
+        your server can securely store a client secret and benefit from access tokens that
+        expire. Never share credentials between unrelated integrations; revoke or rotate
+        credentials that may have been exposed.</p>
+    </section>
+  </conbody>
+</concept>
